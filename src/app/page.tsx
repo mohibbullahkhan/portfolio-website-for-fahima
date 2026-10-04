@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
 import Introduction from "@/components/Introduction";
+import SeamlessEditing from "@/components/SeamlessEditing";
 import PreviousWork from "@/components/PreviousWork";
 import Services from "@/components/Services";
 import EditingExpertise from "@/components/EditingExpertise";
@@ -26,8 +27,11 @@ export default function Home() {
       {/* 03 Animated Infinite Marquee */}
       <Marquee />
 
-      {/* 04 Creative Introduction & Editorial Chips */}
+      {/* 04 Creative Introduction & Editorial Chips with Scroll Animation */}
       <Introduction />
+
+      {/* 04.5 Seamless Editing Suite & Export Config Cards */}
+      <SeamlessEditing />
 
       {/* 05 Previous Work & Video Lightbox Player */}
       <PreviousWork />
