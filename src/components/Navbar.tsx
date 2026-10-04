@@ -115,18 +115,26 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Right CTA Button */}
-          <div className="hidden md:flex items-center gap-4">
+          {/* Right CTA Buttons */}
+          <div className="hidden md:flex items-center gap-5">
             <Link
-              href="#contact"
-              className={`group inline-flex items-center gap-2 text-xs lg:text-sm font-condensed tracking-widest uppercase px-5 py-2.5 rounded-full transition-all duration-200 font-bold ${
-                isScrolled
-                  ? "bg-lime text-black hover:bg-lime-hover shadow-[0_0_20px_rgba(183,255,0,0.35)]"
-                  : "bg-black text-lime hover:bg-neutral-900 shadow-md"
+              href="#about"
+              className={`text-xs lg:text-sm font-semibold tracking-wider uppercase transition-colors ${
+                isScrolled ? "text-neutral-300 hover:text-white" : "text-black hover:opacity-75"
               }`}
             >
-              <span>LET&apos;S TALK</span>
-              <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              ABOUT
+            </Link>
+
+            <Link
+              href="#contact"
+              className={`inline-flex items-center justify-center text-xs lg:text-sm font-condensed tracking-wider uppercase px-5 py-2.5 rounded-full transition-all duration-200 font-bold ${
+                isScrolled
+                  ? "bg-lime text-black hover:bg-lime-hover shadow-[0_0_20px_rgba(183,255,0,0.35)]"
+                  : "bg-black text-white hover:bg-neutral-900 shadow-md hover:scale-105"
+              }`}
+            >
+              GET STARTED
             </Link>
           </div>
 
