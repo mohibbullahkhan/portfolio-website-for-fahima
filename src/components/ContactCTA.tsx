@@ -1,103 +1,66 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Film, Play } from "lucide-react";
+import { Sparkles, ArrowRight, Play } from "lucide-react";
 
 export default function ContactCTA() {
   return (
-    <section className="relative w-full py-28 sm:py-40 overflow-hidden border-t border-white/10">
-      {/* Full-width Cinematic Studio Background */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1920&q=80"
-          alt="Cinematic Studio Audio Mixing Console"
-          fill
-          className="object-cover object-center"
-        />
-        {/* Dark Vignette & Gradient Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1D1E22] via-black/80 to-[#1D1E22]" />
-        <div className="absolute inset-0 bg-black/50" />
-      </div>
-
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {/* Editorial Sub-badge */}
+    <section className="relative bg-[#060714] py-20 sm:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <div className="max-w-5xl mx-auto relative z-10">
+        
+        {/* Glowing Purple Nebula Container Banner (Matching Screenshot Section 9) */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-lime/30 text-xs font-condensed tracking-widest text-lime uppercase mb-8 shadow-xl"
-        >
-          <Film className="w-3.5 h-3.5" />
-          <span>DIRECTOR&apos;S CUT</span>
-        </motion.div>
-
-        {/* Headline */}
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl uppercase tracking-tight text-white leading-[0.92]"
-        >
-          HAVE A STORY? <br />
-          <span className="text-lime">LET&apos;S MAKE IT</span> <br />
-          UNFORGETTABLE.
-        </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="mt-6 text-base sm:text-xl text-neutral-300 max-w-2xl mx-auto font-normal leading-relaxed"
-        >
-          Have an idea for your next video? Let&apos;s turn your raw vision into something extraordinary
-          that commands attention and stands the test of time.
-        </motion.p>
-
-        {/* Center Lime Pill CTA Button (Inspired by reference screenshot) */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.96 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.25 }}
-          className="mt-10"
+          transition={{ duration: 0.6 }}
+          className="relative rounded-3xl p-8 sm:p-14 md:p-16 text-center overflow-hidden border border-violet-500/30 shadow-[0_0_80px_rgba(139,92,246,0.3)] bg-gradient-to-b from-[#131442] via-[#0d0e2e] to-[#07081a]"
         >
-          <Link
-            href="#contact"
-            className="group inline-flex items-center gap-3 bg-lime text-black hover:bg-lime-hover font-condensed tracking-wider text-lg sm:text-xl px-10 py-5 rounded-full font-bold transition-all duration-300 shadow-[0_0_40px_rgba(183,255,0,0.5)] hover:scale-105"
-          >
-            <span>START A PROJECT</span>
-            <ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-          </Link>
-        </motion.div>
+          {/* Ambient Lighting Layers */}
+          <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-violet-500/30 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute -bottom-24 right-1/4 w-80 h-80 bg-fuchsia-500/20 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute inset-0 pointer-events-none stars-overlay opacity-40" />
 
-        {/* Digital Counter Blocks (Inspired directly by the "1 9 2 8 8 4" blocks in the reference screenshot) */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.35 }}
-          className="mt-16 sm:mt-20 pt-12 border-t border-white/10"
-        >
-          <div className="flex items-center justify-center gap-2 sm:gap-3">
-            {["1", "9", "2", "8", "8", "4"].map((digit, i) => (
-              <span
-                key={i}
-                className="w-10 sm:w-14 h-14 sm:h-18 rounded-xl bg-black/80 border border-white/20 backdrop-blur-md flex items-center justify-center font-display text-2xl sm:text-4xl text-lime shadow-xl"
-              >
-                {digit}
+          {/* Content */}
+          <div className="relative z-10 max-w-2xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-violet-950/60 border border-violet-500/40 text-xs font-medium text-violet-300 uppercase mb-6 backdrop-blur-md">
+              <Sparkles className="w-3.5 h-3.5 text-violet-400" />
+              <span>Let&apos;s Build Together</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight">
+              Leading The Way In <br />
+              <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent purple-text-glow">
+                Video Creation
               </span>
-            ))}
-          </div>
+            </h2>
 
-          <p className="mt-3 text-[11px] font-mono uppercase tracking-widest text-neutral-400">
-            TOTAL RENDERED FRAMES MASTERED & DELIVERED
-          </p>
+            <p className="mt-4 text-sm sm:text-base text-slate-300 max-w-lg mx-auto font-normal leading-relaxed">
+              Ready to elevate your raw vision into unforgettable video experiences that command attention
+              and drive real results?
+            </p>
+
+            {/* Dual Pill Buttons (Matching Screenshot) */}
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+              <Link
+                href="#contact"
+                className="inline-flex items-center justify-center px-8 py-3.5 rounded-full text-white font-medium text-sm sm:text-base bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 shadow-[0_0_30px_rgba(139,92,246,0.6)] hover:shadow-[0_0_40px_rgba(139,92,246,0.8)] transition-all duration-300 hover:scale-[1.02]"
+              >
+                Start A Project
+              </Link>
+
+              <Link
+                href="#work"
+                className="inline-flex items-center justify-center px-7 py-3.5 rounded-full text-slate-200 hover:text-white font-medium text-sm sm:text-base bg-white/[0.08] hover:bg-white/[0.14] border border-white/20 backdrop-blur-md transition-all duration-300"
+              >
+                View Showreel
+              </Link>
+            </div>
+          </div>
         </motion.div>
+
       </div>
     </section>
   );

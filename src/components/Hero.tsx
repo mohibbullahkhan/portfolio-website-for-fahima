@@ -1,439 +1,581 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Play,
   Pause,
-  ArrowUpRight,
-  Share2,
-  Sliders,
   Volume2,
+  VolumeX,
   Maximize2,
-  ChevronDown,
-  RotateCcw,
-  RotateCw,
-  Scissors,
-  Layers,
   Sparkles,
+  Sliders,
+  Film,
+  Layers,
+  ArrowRight,
+  CheckCircle2,
+  Eye,
+  TrendingUp,
+  Scissors,
+  Wand2,
+  Clock,
+  Zap,
 } from "lucide-react";
 
-export default function Hero() {
-  const [isPlaying, setIsPlaying] = useState(true);
+// Real playable showcase clips across different editing disciplines
+const showcaseClips = [
+  {
+    id: "commercial",
+    title: "High-Octane Commercial",
+    category: "Commercial Ad",
+    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-sports-car-drifting-on-a-road-42797-large.mp4",
+    poster: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1200&q=80",
+    specs: "4K UHD • 60 FPS • ProRes 422 HQ",
+    pacingTag: "Speed Ramps + Bass Hits",
+    retention: "82% Avg Watch",
+    timecode: "00:00:45:12",
+  },
+  {
+    id: "reel",
+    title: "Viral Kinetic Short",
+    category: "Reels & Shorts",
+    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-man-dancing-under-neon-lights-42907-large.mp4",
+    poster: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1200&q=80",
+    specs: "1080×1920 (9:16) • 60 FPS",
+    pacingTag: "Dynamic 3s Hook + SFX",
+    retention: "89% Retention",
+    timecode: "00:00:30:00",
+  },
+  {
+    id: "cinematic",
+    title: "Cinematic Narrative Film",
+    category: "Storytelling",
+    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-camera-operator-filming-an-actor-41589-large.mp4",
+    poster: "https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=1200&q=80",
+    specs: "DCI 4K • 24 FPS • 12-Bit LOG",
+    pacingTag: "Emotional Cadence",
+    retention: "74% Watch Time",
+    timecode: "00:03:42:18",
+  },
+  {
+    id: "sound",
+    title: "Sound Design & Color Grade",
+    category: "Post-Production",
+    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-hands-working-on-a-sound-mixing-board-43093-large.mp4",
+    poster: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1200&q=80",
+    specs: "-14 LUFS • EBU R128 Master",
+    pacingTag: "Spatial Foley Layering",
+    retention: "Broadcast Ready",
+    timecode: "00:01:15:00",
+  },
+];
 
-  // Time ticks ruler numbers 0S to 16S
-  const timeTicks = Array.from({ length: 17 }, (_, i) => `${i}S`);
+export default function Hero() {
+  const [activeClipIndex, setActiveClipIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isGraded, setIsGraded] = useState(true); // Toggle between Master Film Grade vs Flat Log profile
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const activeClip = showcaseClips[activeClipIndex];
+
+  // Auto-play when clip changes
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => setIsPlaying(false));
+    }
+  }, [activeClipIndex]);
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const toggleMute = () => {
+    if (!videoRef.current) return;
+    videoRef.current.muted = !isMuted;
+    setIsMuted(!isMuted);
+  };
+
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      setCurrentTime(videoRef.current.currentTime);
+      setDuration(videoRef.current.duration || 1);
+    }
+  };
+
+  const handleScrub = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!videoRef.current || !duration) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const newTime = (clickX / rect.width) * duration;
+    videoRef.current.currentTime = newTime;
+    setCurrentTime(newTime);
+  };
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    const frames = Math.floor((seconds % 1) * 24);
+    return `00:${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}:${String(frames).padStart(2, "0")}`;
+  };
 
   return (
     <section
       id="home"
-      className="relative bg-[#D4FF00] text-black pt-28 sm:pt-36 pb-24 sm:pb-36 overflow-hidden selection:bg-black selection:text-[#D4FF00]"
+      className="relative bg-[#060714] text-white pt-32 sm:pt-40 pb-20 sm:pb-28 overflow-hidden select-none"
     >
-      {/* Background Subtle Noise Texture */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none noise-overlay" />
+      {/* Background Multi-Layered Cosmic Depth */}
+      <div className="absolute inset-0 pointer-events-none stars-overlay opacity-50" />
 
-      {/* Main Container */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      {/* Ambient Nebula Radial Light Arcs */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] sm:w-[1000px] h-[550px] bg-violet-600/20 rounded-full blur-[170px] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/4 w-[450px] h-[450px] bg-indigo-600/15 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute top-1/2 right-1/4 w-[500px] h-[500px] bg-fuchsia-600/15 rounded-full blur-[160px] pointer-events-none" />
+
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Top Headline Area */}
-        <div className="text-center max-w-5xl mx-auto relative">
-          {/* Top-Right 8-Point Star Icon (Exactly from Reference) */}
-          <div className="absolute -top-4 sm:-top-8 right-2 sm:right-10 pointer-events-none">
-            <svg
-              className="w-8 h-8 sm:w-14 sm:h-14 text-black fill-current"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 0L13.8 8.2L22 10L13.8 11.8L12 20L10.2 11.8L2 10L10.2 8.2L12 0Z" />
-            </svg>
-          </div>
+        {/* Top Headline & Pitch Section */}
+        <div className="text-center max-w-4xl mx-auto relative">
+          
+          {/* Top Pill Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-violet-950/60 border border-violet-500/30 text-violet-300 text-xs font-medium backdrop-blur-md mb-6 shadow-[0_0_20px_rgba(139,92,246,0.25)]"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+            </span>
+            <span>FAHIMA • SENIOR VIDEO EDITOR &amp; STORYTELLER</span>
+            <span className="text-violet-400/50">•</span>
+            <span className="text-emerald-400 font-mono text-[11px]">OPEN FOR COMMISSIONS</span>
+          </motion.div>
 
-          {/* Bottom-Left 8-Point Star Icon (Exactly from Reference) */}
-          <div className="absolute top-28 sm:top-40 left-2 sm:left-12 pointer-events-none">
-            <svg
-              className="w-6 h-6 sm:w-10 sm:h-10 text-black fill-current"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 0L13.8 8.2L22 10L13.8 11.8L12 20L10.2 11.8L2 10L10.2 8.2L12 0Z" />
-            </svg>
-          </div>
-
-          {/* Massive Two-Line Headline */}
+          {/* Luxury Main Headline: Authentic, Human Craftsmanship */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="font-display text-6xl sm:text-8xl md:text-9xl lg:text-[140px] tracking-tight leading-[0.85] uppercase text-black font-normal"
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white leading-[1.06]"
           >
-            EDIT LIKE MAGIC
-            <br />
-            EVERY TIME
+            Turning Raw Footage into <br />
+            <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent purple-text-glow">
+              Cinematic Stories That Convert.
+            </span>
           </motion.h1>
 
-          {/* Supporting Description Subtitle */}
+          {/* Authentic Positioning Subtitle */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="mt-6 sm:mt-8 text-sm sm:text-base md:text-lg text-neutral-900 max-w-2xl mx-auto font-medium leading-relaxed"
+            className="mt-6 text-sm sm:text-base md:text-lg text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed"
           >
-            Edit videos effortlessly with powerful tools, smooth performance, and pro features
-            tailored for creators, storytellers, and content professionals.
+            I craft high-retention commercial films, viral social shorts, and narrative cuts for creators
+            and brands — combining frame-accurate pacing, 12-bit DaVinci color grading, and broadcast sound design.
           </motion.p>
 
-          {/* Black Pill CTA Button */}
+          {/* Action CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.25 }}
-            className="mt-8 sm:mt-9 flex justify-center"
+            className="mt-8 flex flex-wrap items-center justify-center gap-3.5 sm:gap-4"
           >
-            <Link
-              href="#work"
-              className="inline-flex items-center justify-center bg-black text-white hover:bg-neutral-900 font-condensed tracking-wider text-base sm:text-lg px-9 py-4 rounded-full font-bold shadow-2xl hover:scale-105 transition-all duration-200"
+            <button
+              onClick={() => {
+                // Focus on video player
+                const el = document.getElementById("hero-player-suite");
+                el?.scrollIntoView({ behavior: "smooth" });
+                if (!isPlaying) togglePlay();
+              }}
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-white font-medium text-sm sm:text-base bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 shadow-[0_0_30px_rgba(139,92,246,0.55)] hover:shadow-[0_0_40px_rgba(139,92,246,0.75)] transition-all duration-300 hover:scale-[1.02]"
             >
-              DOWNLOAD NOW
+              <Play className="w-4 h-4 fill-current" />
+              <span>Watch 2026 Showreel</span>
+            </button>
+
+            <Link
+              href="#calculator"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-white font-medium text-sm sm:text-base bg-white/[0.08] hover:bg-white/[0.14] border border-violet-500/30 hover:border-violet-500/60 backdrop-blur-md transition-all duration-300"
+            >
+              <Zap className="w-4 h-4 text-amber-400" />
+              <span>Calculate Project Cost</span>
+            </Link>
+
+            <Link
+              href="#contact"
+              className="inline-flex items-center justify-center px-6 py-3.5 rounded-full text-slate-300 hover:text-white font-medium text-sm sm:text-base bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 backdrop-blur-md transition-all duration-300"
+            >
+              <span>Book Discovery Call</span>
             </Link>
           </motion.div>
-        </div>
 
-        {/* Horizontal Timeline Ticks Ruler Bar (Directly from Reference) */}
-        <div className="mt-14 sm:mt-18 mb-10 sm:mb-14 relative max-w-6xl mx-auto overflow-hidden">
-          {/* Top Ticks Border */}
-          <div className="relative h-6 flex items-end">
-            <div className="w-full flex justify-between items-end border-b border-black/30 pb-1 px-1">
-              {Array.from({ length: 120 }).map((_, i) => (
-                <span
-                  key={i}
-                  className={`w-[1px] bg-black/40 ${
-                    i % 10 === 0 ? "h-3.5 bg-black" : i % 5 === 0 ? "h-2.5" : "h-1.5"
-                  }`}
-                />
-              ))}
-            </div>
-
-            {/* Red Needle Cursor Indicator at ~4.5S */}
-            <div className="absolute left-[30%] sm:left-[32%] top-0 bottom-0 flex flex-col items-center">
-              <div className="w-2.5 h-3 bg-red-600 rounded-sm shadow-sm" />
-              <div className="w-[2px] h-full bg-red-600" />
-            </div>
-          </div>
-
-          {/* Seconds Labels: 0S ····· 1S ····· 2S ····· ... 16S */}
-          <div className="flex justify-between items-center text-[10px] sm:text-xs font-mono font-bold text-black/80 px-1 pt-1.5">
-            {timeTicks.map((tick, i) => (
-              <span key={i} className="flex items-center gap-1 sm:gap-2">
-                <span>{tick}</span>
-                {i < timeTicks.length - 1 && (
-                  <span className="hidden md:inline text-black/40 font-normal">·····</span>
-                )}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Video Editing Workspace Suite with Left & Right Floating Motocross Cards */}
-        <div className="relative max-w-6xl mx-auto mt-6">
-          
-          {/* Floating Motocross Card (Left) */}
+          {/* Trust / Proof Strip */}
           <motion.div
-            animate={{ y: [0, -8, 0] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -left-6 lg:-left-24 top-1/2 -translate-y-1/2 z-20 w-36 sm:w-48 lg:w-56 rounded-2xl overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.5)] border-2 border-black/40 bg-black hidden md:block"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="mt-6 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-slate-300 font-mono"
           >
-            <div className="relative aspect-[4/3]">
-              <Image
-                src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=600&q=80"
-                alt="Motocross stunt jump airborne"
-                fill
-                className="object-cover"
-              />
+            <div className="flex items-center gap-2">
+              <div className="flex -space-x-1.5">
+                {[
+                  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80",
+                  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&q=80",
+                  "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=80&q=80",
+                ].map((avatar, i) => (
+                  <div key={i} className="relative w-5 h-5 rounded-full overflow-hidden border border-violet-500/40">
+                    <Image src={avatar} alt="Client" fill className="object-cover" />
+                  </div>
+                ))}
+              </div>
+              <span className="text-violet-300">★★★★★ 5.0 (40+ Client Reviews)</span>
             </div>
+            <span className="hidden sm:inline text-slate-600">•</span>
+            <span className="text-slate-300">15M+ Total Organic Views</span>
+            <span className="hidden sm:inline text-slate-600">•</span>
+            <span className="text-emerald-400">48h Delivery Turnaround</span>
           </motion.div>
 
-          {/* Floating Motocross Card (Right) */}
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-            className="absolute -right-6 lg:-right-24 top-1/2 -translate-y-1/2 z-20 w-36 sm:w-48 lg:w-56 rounded-2xl overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.5)] border-2 border-black/40 bg-black hidden md:block"
-          >
-            <div className="relative aspect-[4/3]">
-              <Image
-                src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80"
-                alt="Motocross high speed turn"
-                fill
-                className="object-cover"
-              />
-            </div>
-          </motion.div>
+        </div>
 
-          {/* Main NLE Editing Software Window (Matching Reference UI) */}
-          <div className="relative bg-[#1A1B1E] rounded-3xl border border-black/30 shadow-[0_30px_70px_rgba(0,0,0,0.7)] overflow-hidden text-white z-10">
+        {/* The Masterpiece Centerpiece: Professional Cinematic NLE Editing Suite */}
+        <motion.div
+          id="hero-player-suite"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.35 }}
+          className="relative max-w-6xl mx-auto mt-12 sm:mt-18"
+        >
+          {/* Ambient Lighting Frame Glow */}
+          <div className="absolute -inset-1 bg-gradient-to-r from-violet-600/30 via-fuchsia-600/20 to-indigo-600/30 rounded-3xl blur-2xl opacity-70 -z-10" />
+
+          {/* Main Editing Window Container */}
+          <div className="bg-[#0b0c24]/90 backdrop-blur-2xl rounded-2xl sm:rounded-3xl border border-white/[0.12] overflow-hidden shadow-[0_25px_70px_rgba(0,0,0,0.9)]">
             
-            {/* Window Top Titlebar */}
-            <div className="bg-[#141517] px-4 py-2.5 flex items-center justify-between border-b border-white/10 text-xs">
-              {/* macOS Window Controls + Undo/Redo */}
+            {/* Top NLE Window Titlebar */}
+            <div className="bg-[#08091a] px-4 py-3 flex flex-wrap items-center justify-between border-b border-white/[0.08] text-xs font-mono gap-2">
+              
+              {/* macOS Dots + Project Filename */}
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-1.5">
-                  <span className="w-3 h-3 rounded-full bg-[#FF5F56]" />
-                  <span className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
-                  <span className="w-3 h-3 rounded-full bg-[#27C93F]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
                 </div>
-                <div className="flex items-center gap-2 text-neutral-400 pl-3 border-l border-white/10">
-                  <RotateCcw className="w-3.5 h-3.5 hover:text-white cursor-pointer" />
-                  <RotateCw className="w-3.5 h-3.5 hover:text-white cursor-pointer" />
-                  <Scissors className="w-3.5 h-3.5 hover:text-white cursor-pointer" />
-                </div>
-              </div>
-
-              {/* Tab: Vlog Japan 2025 */}
-              <div className="flex items-center gap-2 bg-[#202226] px-4 py-1 rounded-md border border-white/10">
-                <span className="font-mono text-[11px] text-neutral-200">
-                  Vlog Japan 2025
-                </span>
-                <span className="text-[10px] text-neutral-500 hidden sm:inline">
-                  | Last edit 1 min ago
-                </span>
-                <span className="text-neutral-400 hover:text-white text-xs cursor-pointer ml-1">
-                  ×
-                </span>
-              </div>
-
-              {/* Action Buttons: Preview, Share, Export */}
-              <div className="flex items-center gap-2">
-                <button className="hidden sm:inline-flex items-center gap-1 px-3 py-1 rounded text-[11px] font-semibold text-neutral-300 hover:text-white">
-                  <span>▶ PREVIEW</span>
-                </button>
-                <button className="hidden sm:inline-flex items-center gap-1 px-3 py-1 rounded text-[11px] font-semibold text-neutral-300 hover:text-white">
-                  <Share2 className="w-3.5 h-3.5" />
-                  <span>SHARE</span>
-                </button>
-                <button className="inline-flex items-center gap-1 px-3 py-1 rounded-md bg-[#D4FF00] text-black font-condensed font-bold text-xs uppercase shadow">
-                  EXPORT
-                </button>
-                <div className="w-6 h-6 rounded-full bg-neutral-700 overflow-hidden relative ml-1">
-                  <Image
-                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"
-                    alt="User"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* 3-Column Workspace Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 bg-[#17181B]">
-              
-              {/* Left Column: Tools & Cropping & Borders Inspector */}
-              <div className="hidden lg:block lg:col-span-3 border-r border-white/10 p-3.5 bg-[#141517] text-xs font-mono">
-                <div className="text-[11px] uppercase tracking-wider font-bold text-white mb-2 flex items-center justify-between">
-                  <span>AI TOOLS</span>
-                </div>
-                
-                {/* Tabs */}
-                <div className="flex gap-2 text-[10px] text-neutral-400 pb-2 border-b border-white/10 mb-3">
-                  <span className="text-[#D4FF00] font-bold border-b border-[#D4FF00] pb-0.5">Narrate</span>
-                  <span>Transcribe</span>
-                  <span>Colorgrade</span>
-                </div>
-
-                <p className="text-[10px] text-neutral-400 mb-3 leading-tight">
-                  Color grade this video with a Japanese-style scene aesthetic.
-                </p>
-
-                <button className="w-full py-1.5 rounded-md bg-[#D4FF00] text-black font-condensed font-bold text-xs uppercase mb-4 shadow">
-                  GENERATE NOW
-                </button>
-
-                {/* Cropping & Borders Accordion */}
-                <div className="space-y-3 pt-2 border-t border-white/10">
-                  <div className="flex items-center justify-between text-neutral-300 font-bold text-[11px]">
-                    <span className="flex items-center gap-1">
-                      <span className="w-2 h-2 rounded-full bg-[#D4FF00]" />
-                      <span>CROPPING & BORDERS</span>
-                    </span>
-                    <ChevronDown className="w-3.5 h-3.5" />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2 text-[10px] text-neutral-400">
-                    <div className="bg-[#1C1D21] p-1.5 rounded border border-white/5">
-                      <span>Cropping: -10 px</span>
-                    </div>
-                    <div className="bg-[#1C1D21] p-1.5 rounded border border-white/5">
-                      <span>Radius: 10 px</span>
-                    </div>
-                  </div>
-
-                  {/* Look & Style */}
-                  <div className="pt-2 border-t border-white/10">
-                    <div className="flex items-center justify-between text-neutral-300 font-bold text-[11px] mb-2">
-                      <span className="flex items-center gap-1">
-                        <span className="w-2 h-2 rounded-full bg-neutral-500" />
-                        <span>LOOK & STYLE</span>
-                      </span>
-                      <ChevronDown className="w-3.5 h-3.5" />
-                    </div>
-
-                    <div className="space-y-2">
-                      <div>
-                        <div className="flex justify-between text-[10px] text-neutral-400 mb-0.5">
-                          <span>Exposure</span>
-                          <span className="text-[#D4FF00]">35%</span>
-                        </div>
-                        <div className="h-1 bg-neutral-800 rounded-full">
-                          <div className="h-full bg-[#D4FF00] w-[35%] rounded-full" />
-                        </div>
-                      </div>
-                      <div>
-                        <div className="flex justify-between text-[10px] text-neutral-400 mb-0.5">
-                          <span>Contrast</span>
-                          <span className="text-[#D4FF00]">90%</span>
-                        </div>
-                        <div className="h-1 bg-neutral-800 rounded-full">
-                          <div className="h-full bg-[#D4FF00] w-[90%] rounded-full" />
-                        </div>
-                      </div>
-                      <div>
-                        <div className="flex justify-between text-[10px] text-neutral-400 mb-0.5">
-                          <span>Saturation</span>
-                          <span className="text-[#D4FF00]">98%</span>
-                        </div>
-                        <div className="h-1 bg-neutral-800 rounded-full">
-                          <div className="h-full bg-[#D4FF00] w-[98%] rounded-full" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <div className="flex items-center gap-2 pl-3 border-l border-white/[0.08] text-slate-300">
+                  <Film className="w-3.5 h-3.5 text-violet-400" />
+                  <span className="font-semibold text-white">FAHIMA_MASTER_SUITE_2026.prproj</span>
+                  <span className="text-[10px] text-slate-500 hidden md:inline">| Rec.709 12-Bit Master</span>
                 </div>
               </div>
 
-              {/* Center Column: Main Motocross Video Player */}
-              <div className="lg:col-span-6 p-3 sm:p-4 flex flex-col justify-between bg-black">
-                <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden shadow-2xl border border-white/10 group">
-                  <Image
-                    src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1200&q=80"
-                    alt="Motocross Stadium Race #771"
-                    fill
-                    priority
-                    className="object-cover"
-                  />
-
-                  {/* Play Button Overlay */}
-                  <button
-                    onClick={() => setIsPlaying(!isPlaying)}
-                    className="absolute inset-0 m-auto w-14 h-14 rounded-full bg-[#D4FF00] text-black flex items-center justify-center shadow-[0_0_30px_rgba(212,255,0,0.6)] hover:scale-110 active:scale-95 transition-transform"
-                    aria-label="Toggle Playback"
-                  >
-                    {isPlaying ? (
-                      <Pause className="w-6 h-6 fill-current" />
-                    ) : (
-                      <Play className="w-6 h-6 fill-current ml-0.5" />
-                    )}
-                  </button>
-
-                  {/* Player Scrubber Bar with Blue/Red In-Out Markers */}
-                  <div className="absolute bottom-2 left-3 right-3 flex items-center gap-2">
-                    <div className="relative flex-1 h-1.5 bg-white/20 rounded-full overflow-hidden">
-                      <div className="absolute left-[20%] w-[50%] h-full bg-[#D4FF00]" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Sub-Player Controls */}
-                <div className="flex items-center justify-between text-neutral-400 text-xs pt-2">
-                  <div className="flex items-center gap-3">
-                    <Volume2 className="w-4 h-4 hover:text-white cursor-pointer" />
-                    <span className="font-mono text-[10px]">100%</span>
-                  </div>
-                  <span className="font-mono text-[10px] text-[#D4FF00]">4K UHD 60FPS</span>
-                  <Maximize2 className="w-4 h-4 hover:text-white cursor-pointer" />
-                </div>
-              </div>
-
-              {/* Right Column: Project Media Bin */}
-              <div className="hidden lg:block lg:col-span-3 border-l border-white/10 p-3.5 bg-[#141517] text-xs font-mono">
-                <div className="text-[11px] uppercase tracking-wider font-bold text-white mb-2 flex items-center justify-between">
-                  <span>PROJECT MEDIA</span>
-                  <span className="text-[#D4FF00] text-[10px]">23 items</span>
-                </div>
-
-                {/* 2-Column Grid of Motocross Action Takes */}
-                <div className="grid grid-cols-2 gap-2 max-h-[300px] overflow-hidden">
-                  {[
-                    { title: "MOTO_01", time: "00:29", img: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=200&q=80" },
-                    { title: "JUMP_771", time: "01:07", img: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=200&q=80" },
-                    { title: "TURN_SPEED", time: "00:56", img: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=200&q=80" },
-                    { title: "STADIUM", time: "01:34", img: "https://images.unsplash.com/photo-1518173946687-a4c8a383392e?auto=format&fit=crop&w=200&q=80" },
-                    { title: "FINISH_LINE", time: "00:30", img: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=200&q=80" },
-                    { title: "PODIUM", time: "01:41", img: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=200&q=80" },
-                  ].map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="group relative rounded-md overflow-hidden bg-black/50 border border-white/10 hover:border-[#D4FF00] transition-colors cursor-pointer"
+              {/* Clip Category Switcher Tabs */}
+              <div className="flex items-center gap-1 bg-[#121332] p-1 rounded-xl border border-white/[0.08] overflow-x-auto no-scrollbar">
+                {showcaseClips.map((clip, idx) => {
+                  const isActive = activeClipIndex === idx;
+                  return (
+                    <button
+                      key={clip.id}
+                      onClick={() => setActiveClipIndex(idx)}
+                      className={`px-3 py-1 rounded-lg text-[11px] font-mono whitespace-nowrap transition-all ${
+                        isActive
+                          ? "bg-violet-600 text-white font-bold shadow-[0_0_12px_rgba(139,92,246,0.6)]"
+                          : "text-slate-400 hover:text-white"
+                      }`}
                     >
-                      <div className="relative aspect-video">
-                        <Image src={item.img} alt={item.title} fill className="object-cover" />
-                        <span className="absolute bottom-1 right-1 bg-black/80 text-[8px] font-mono text-neutral-300 px-1 rounded">
-                          {item.time}
-                        </span>
-                      </div>
-                      <p className="text-[9px] font-mono text-neutral-300 p-1 truncate">
-                        {item.title}
-                      </p>
-                    </div>
-                  ))}
-                </div>
+                      {clip.category}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Right Export / Specs Badge */}
+              <div className="hidden sm:flex items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-emerald-300 text-[10px]">
+                  ● LIVE PLAYBACK
+                </span>
+                <span className="px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-slate-300 text-[10px]">
+                  4K PRORES
+                </span>
               </div>
             </div>
 
-            {/* Bottom Timeline Section (Directly from Reference) */}
-            <div className="bg-[#121315] border-t border-white/10 p-3 sm:p-4">
-              {/* Header with Timecode Ruler */}
-              <div className="flex items-center justify-between text-[11px] font-mono text-neutral-400 mb-2 px-2">
-                <span className="text-[#D4FF00] font-bold">01:02:36:10</span>
-                <span>0S</span>
-                <span>5S</span>
-                <span>10S</span>
-                <span>15S</span>
+            {/* Main Workbench Grid (Left: Inspector / Specs | Right: Real Video Player) */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 bg-[#090a1f]">
+              
+              {/* Left Column: Post-Production Inspector & Technical Mastery */}
+              <div className="lg:col-span-4 p-4 sm:p-5 bg-[#0b0c24] border-b lg:border-b-0 lg:border-r border-white/[0.08] flex flex-col justify-between text-xs font-mono">
+                <div>
+                  <div className="flex items-center justify-between pb-3 border-b border-white/[0.08] mb-4">
+                    <span className="text-[11px] font-bold text-violet-300 uppercase tracking-wider flex items-center gap-1.5">
+                      <Scissors className="w-3.5 h-3.5 text-violet-400" />
+                      TIMELINE METRICS
+                    </span>
+                    <span className="text-[10px] text-violet-400 bg-violet-950/60 px-2 py-0.5 rounded-full border border-violet-500/30">
+                      {activeClip.specs}
+                    </span>
+                  </div>
+
+                  <h3 className="text-base sm:text-lg font-bold text-white mb-1">
+                    {activeClip.title}
+                  </h3>
+                  <p className="text-xs text-slate-400 mb-4 leading-relaxed font-normal">
+                    Pacing rhythm tailored for maximum retention, bass-driven audio sync, and commercial chromatic separation.
+                  </p>
+
+                  {/* Interactive DaVinci Grade Switcher (Before / After live filter) */}
+                  <div className="p-3.5 rounded-2xl bg-[#0f1032] border border-violet-500/25 mb-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[11px] font-bold text-slate-200 flex items-center gap-1.5">
+                        <Sliders className="w-3.5 h-3.5 text-violet-400" />
+                        COLOR GRADE STATUS
+                      </span>
+                      <button
+                        onClick={() => setIsGraded(!isGraded)}
+                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider transition-all ${
+                          isGraded
+                            ? "bg-violet-600 text-white shadow-[0_0_12px_rgba(139,92,246,0.6)]"
+                            : "bg-neutral-800 text-slate-300 border border-white/20"
+                        }`}
+                      >
+                        {isGraded ? "FILM LUT [ON]" : "FLAT LOG [OFF]"}
+                      </button>
+                    </div>
+                    <p className="text-[10px] text-slate-400 leading-tight">
+                      {isGraded
+                        ? "✓ Showing customized 12-bit DaVinci Rec.709 film print LUT grade."
+                        : "○ Showing camera flat S-Log3 profile without contrast or color curve."}
+                    </p>
+                  </div>
+
+                  {/* Editorial Craft Badges */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between p-2 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+                      <span className="text-[11px] text-slate-400">Pacing Technique:</span>
+                      <span className="text-[11px] font-bold text-violet-300">{activeClip.pacingTag}</span>
+                    </div>
+                    <div className="flex items-center justify-between p-2 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+                      <span className="text-[11px] text-slate-400">Audience Retention:</span>
+                      <span className="text-[11px] font-bold text-emerald-400 flex items-center gap-1">
+                        <TrendingUp className="w-3 h-3" />
+                        {activeClip.retention}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between p-2 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+                      <span className="text-[11px] text-slate-400">Loudness Target:</span>
+                      <span className="text-[11px] font-bold text-slate-200">-14.0 LUFS Normalized</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom Real-Time Audio Waveform Simulation */}
+                <div className="pt-4 mt-4 border-t border-white/[0.08]">
+                  <div className="flex items-center justify-between text-[10px] text-slate-400 mb-1.5">
+                    <span className="flex items-center gap-1.5">
+                      <Volume2 className="w-3 h-3 text-violet-400" />
+                      MASTER AUDIO OUTPUT
+                    </span>
+                    <span className="text-violet-400">STEREO -3 dB PEAK</span>
+                  </div>
+                  {/* Wave bars */}
+                  <div className="flex items-end gap-1 h-5 bg-black/40 rounded-lg p-1 overflow-hidden">
+                    {[6, 12, 16, 10, 18, 14, 8, 16, 20, 12, 8, 14, 18, 16, 10, 14, 20, 12, 8, 16].map((h, i) => (
+                      <span
+                        key={i}
+                        style={{ height: `${isPlaying ? (h * ((i % 3) + 1)) / 3 : 4}px` }}
+                        className="flex-1 bg-gradient-to-t from-violet-600 to-fuchsia-400 rounded-full transition-all duration-150"
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
 
-              {/* Multi-Track Filmstrip Lanes */}
-              <div className="space-y-1.5 font-mono text-[10px]">
+              {/* Right Column: High-Definition Video Player Viewport */}
+              <div className="lg:col-span-8 p-3 sm:p-5 flex flex-col justify-between bg-black relative">
+                
+                {/* Main Video Screen Container */}
+                <div
+                  className="relative w-full aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-black shadow-2xl border border-white/[0.08] group cursor-pointer"
+                  onClick={togglePlay}
+                >
+                  <video
+                    ref={videoRef}
+                    src={activeClip.videoUrl}
+                    poster={activeClip.poster}
+                    autoPlay
+                    loop
+                    muted={isMuted}
+                    playsInline
+                    onTimeUpdate={handleTimeUpdate}
+                    className={`w-full h-full object-cover transition-all duration-500 ${
+                      isGraded
+                        ? "filter contrast-105 saturate-110"
+                        : "filter contrast-75 brightness-95 saturate-40"
+                    }`}
+                  />
+
+                  {/* Cinematic Vignette */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
+
+                  {/* Top Live Badges on Video */}
+                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10 pointer-events-none">
+                    <span className="px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider bg-black/75 backdrop-blur-md text-violet-300 border border-violet-500/30">
+                      {isGraded ? "MASTER COLOR GRADE: ACTIVE" : "LOG PROFILE: UNGRADED"}
+                    </span>
+
+                    <span className="px-2.5 py-1 rounded-full text-[10px] font-mono text-slate-300 bg-black/75 backdrop-blur-md border border-white/10">
+                      {activeClip.category}
+                    </span>
+                  </div>
+
+                  {/* Play / Pause Central Icon on Hover or Pause */}
+                  <div
+                    className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${
+                      isPlaying ? "opacity-0 group-hover:opacity-100" : "opacity-100"
+                    }`}
+                  >
+                    <div className="w-16 h-16 rounded-full bg-violet-600/90 text-white flex items-center justify-center shadow-[0_0_35px_rgba(139,92,246,0.8)] backdrop-blur-md hover:scale-110 transition-transform">
+                      {isPlaying ? (
+                        <Pause className="w-6 h-6 fill-current" />
+                      ) : (
+                        <Play className="w-6 h-6 fill-current ml-0.5" />
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Floating Micro-Notification Badge (Proof of Performance) */}
+                  <div className="absolute bottom-4 left-4 z-10 hidden sm:block pointer-events-none">
+                    <div className="px-3 py-1.5 rounded-xl bg-black/85 backdrop-blur-md border border-white/15 text-[10px] font-mono text-slate-200 flex items-center gap-2 shadow-lg">
+                      <span className="w-2 h-2 rounded-full bg-violet-400 animate-ping" />
+                      <span>{activeClip.pacingTag}</span>
+                    </div>
+                  </div>
+
+                  {/* Volume Toggle Icon inside Player */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleMute();
+                    }}
+                    className="absolute bottom-4 right-4 z-10 p-2 rounded-full bg-black/75 hover:bg-violet-600 backdrop-blur-md text-white border border-white/15 transition-colors"
+                    aria-label="Toggle mute"
+                  >
+                    {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                  </button>
+                </div>
+
+                {/* Sub-Player Timeline Scrubber Bar */}
+                <div className="mt-3 px-1">
+                  {/* Interactive Scrub Bar */}
+                  <div
+                    onClick={handleScrub}
+                    className="relative w-full h-2 bg-white/15 hover:h-2.5 rounded-full overflow-hidden cursor-pointer transition-all mb-2"
+                  >
+                    <div
+                      className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-indigo-500 rounded-full shadow-[0_0_12px_rgba(168,85,247,0.8)]"
+                      style={{ width: `${(currentTime / (duration || 1)) * 100}%` }}
+                    />
+                  </div>
+
+                  {/* Timecode & Player Controls Info */}
+                  <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={togglePlay}
+                        className="text-white hover:text-violet-400 transition-colors"
+                      >
+                        {isPlaying ? "PAUSE [SPACE]" : "PLAY [SPACE]"}
+                      </button>
+                      <span className="text-violet-300 font-bold">
+                        {formatTime(currentTime)}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <span className="text-[10px] text-slate-500 hidden sm:inline">
+                        CLICK TIMELINE TO JUMP
+                      </span>
+                      <button
+                        onClick={toggleMute}
+                        className="text-slate-300 hover:text-white transition-colors"
+                      >
+                        {isMuted ? "UNMUTE AUDIO" : "MUTED"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* Bottom Multi-Track Filmstrip Lanes (Pro NLE Timeline Feel from Screenshot) */}
+            <div className="bg-[#070817] border-t border-white/[0.08] p-3 sm:p-4 text-[10px] font-mono">
+              <div className="flex items-center justify-between text-slate-400 mb-2 px-1">
+                <span className="text-violet-400 font-bold flex items-center gap-1.5">
+                  <Film className="w-3 h-3" />
+                  TIMELINE SEQUENCER: 01:02:36:12
+                </span>
+                <span className="hidden sm:inline text-slate-500">4 TRACKS ACTIVE • 0 FRAMES DROPPED</span>
+                <span className="text-slate-300">ZOOM: 100%</span>
+              </div>
+
+              {/* 3 Filmstrip Tracks */}
+              <div className="space-y-1.5">
                 {/* Track Video 1 */}
                 <div className="flex items-center gap-2">
-                  <span className="w-10 text-neutral-400">Video 1</span>
-                  <div className="flex-1 h-7 bg-black/40 rounded flex items-center gap-1.5 p-1 relative overflow-hidden">
-                    <div className="w-[30%] h-full bg-blue-900/60 border border-blue-500 rounded px-1.5 flex items-center text-white text-[8px]">
-                      Intro_Pan.mov
+                  <span className="w-12 text-slate-400 shrink-0">V1 4K</span>
+                  <div className="flex-1 h-6 bg-black/60 rounded flex items-center gap-1 p-0.5 overflow-hidden">
+                    <div className="w-[32%] h-full bg-violet-950/70 border border-violet-500/50 rounded px-1.5 flex items-center text-violet-200 truncate">
+                      Hook_Intro.mov
                     </div>
-                    {/* Active Highlighted Cut Clip (Yellow Border as in Reference) */}
-                    <div className="w-[28%] h-full bg-[#D4FF00] text-black font-bold border-2 border-yellow-300 rounded px-1.5 flex items-center text-[8px]">
-                      Motocross_Jump.mp4 [CUT]
+                    <div className="w-[38%] h-full bg-violet-600/90 text-white font-bold border border-violet-400 rounded px-1.5 flex items-center truncate shadow-[0_0_10px_rgba(139,92,246,0.5)]">
+                      {activeClip.title} [CUT]
                     </div>
-                    <div className="w-[38%] h-full bg-blue-900/60 border border-blue-500 rounded px-1.5 flex items-center text-white text-[8px]">
-                      Stadium_Cheer.mov
-                    </div>
-                  </div>
-                </div>
-
-                {/* Track Video 2 */}
-                <div className="flex items-center gap-2">
-                  <span className="w-10 text-neutral-400">Video 2</span>
-                  <div className="flex-1 h-6 bg-black/40 rounded flex items-center gap-1.5 p-1 relative">
-                    <div className="w-[22%] h-full bg-purple-900/60 border border-purple-500 rounded px-1.5 flex items-center text-white text-[8px]">
-                      Text_Japan_Vlog
+                    <div className="w-[30%] h-full bg-indigo-950/70 border border-indigo-500/50 rounded px-1.5 flex items-center text-indigo-200 truncate">
+                      Outro_CallToAction.mov
                     </div>
                   </div>
                 </div>
 
-                {/* Track Audio 1 with Waveform */}
+                {/* Track Video 2 (Captions & Motion VFX) */}
                 <div className="flex items-center gap-2">
-                  <span className="w-10 text-[#D4FF00]">Audio 1</span>
-                  <div className="flex-1 h-6 bg-black/40 rounded flex items-center px-2 relative overflow-hidden">
-                    <div className="w-[90%] h-full bg-emerald-950/80 border border-emerald-500 rounded px-1.5 flex items-center text-emerald-300 text-[8px]">
-                      ||||||\/|||||/\/\/\/\/||||||/|||||||||||| Beat_Drop_Master.wav
+                  <span className="w-12 text-slate-400 shrink-0">V2 VFX</span>
+                  <div className="flex-1 h-5 bg-black/60 rounded flex items-center gap-1 p-0.5 overflow-hidden">
+                    <div className="w-[45%] h-full bg-fuchsia-950/60 border border-fuchsia-500/40 rounded px-1.5 flex items-center text-fuchsia-300 truncate">
+                      Dynamic_Kinetic_Captions_4K
+                    </div>
+                    <div className="w-[25%] h-full bg-purple-950/60 border border-purple-500/40 rounded px-1.5 flex items-center text-purple-300 truncate">
+                      Lower_Third_Motion
+                    </div>
+                  </div>
+                </div>
+
+                {/* Track Audio 1 */}
+                <div className="flex items-center gap-2">
+                  <span className="w-12 text-violet-400 shrink-0">A1 SFX</span>
+                  <div className="flex-1 h-5 bg-black/60 rounded flex items-center px-2 overflow-hidden">
+                    <div className="w-[92%] h-full bg-emerald-950/80 border border-emerald-500/50 rounded px-1.5 flex items-center text-emerald-300 truncate">
+                      ||||||/\/\/\/\/\/||||||/|||||| Spatial_Foley_BeatDrop_Master.wav
                     </div>
                   </div>
                 </div>
@@ -441,11 +583,9 @@ export default function Hero() {
             </div>
 
           </div>
-        </div>
-      </div>
+        </motion.div>
 
-      {/* Bottom Transition Gradient into Deep Dark Charcoal */}
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent via-[#1D1E22]/60 to-[#1D1E22] pointer-events-none" />
+      </div>
     </section>
   );
 }

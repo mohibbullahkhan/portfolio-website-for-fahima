@@ -2,63 +2,52 @@
 
 import React from "react";
 
-const marqueeItems = [
-  "VIDEO EDITING",
-  "//",
-  "STORYTELLING",
-  "//",
-  "COLOR GRADING",
-  "//",
-  "MOTION DESIGN",
-  "//",
-  "SOUND DESIGN",
-  "//",
-  "PACING & RHYTHM",
-  "//",
-  "HIGH RETENTION HOOKS",
-  "//",
+const brandList = [
+  "DELL",
+  "BOSCH",
+  "NETFLIX",
+  "DAVINCI RESOLVE",
+  "ADOBE PREMIERE",
+  "AFTER EFFECTS",
+  "FRAME.IO",
+  "SPOTIFY",
+  "YOUTUBE 4K",
+  "APPLE PRORES",
+  "FINAL CUT PRO",
 ];
 
 export default function Marquee() {
   return (
-    <div className="relative w-full bg-black py-4 sm:py-6 overflow-hidden border-y border-white/10 z-20">
-      {/* Subtle Lime Gradient Edges */}
-      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+    <div className="relative w-full bg-[#050611] py-8 sm:py-10 overflow-hidden border-y border-white/[0.06] z-20">
+      {/* Subtle Purple Ambient Lighting & Fade Edges */}
+      <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#050611] to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#050611] to-transparent z-10 pointer-events-none" />
 
       <div className="flex select-none whitespace-nowrap overflow-hidden">
         {/* First Loop */}
-        <div className="flex items-center gap-6 sm:gap-10 animate-marquee text-white text-sm sm:text-lg md:text-xl font-condensed tracking-widest uppercase">
-          {marqueeItems.map((item, index) => (
-            <span
-              key={`item1-${index}`}
-              className={
-                item === "//"
-                  ? "text-lime font-mono font-bold text-base sm:text-xl"
-                  : "text-neutral-200 hover:text-lime transition-colors cursor-default"
-              }
-            >
-              {item}
-            </span>
+        <div className="flex items-center gap-12 sm:gap-20 animate-marquee text-slate-400 font-medium text-sm sm:text-base tracking-[0.2em] uppercase">
+          {brandList.map((brand, index) => (
+            <div key={`brand1-${index}`} className="flex items-center gap-12 sm:gap-20">
+              <span className="hover:text-violet-300 transition-colors cursor-default opacity-60 hover:opacity-100">
+                {brand}
+              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-violet-500/40" />
+            </div>
           ))}
         </div>
 
-        {/* Second Duplicate Loop for Infinite Seamless Scroll */}
+        {/* Second Duplicate Loop */}
         <div
-          className="flex items-center gap-6 sm:gap-10 animate-marquee text-white text-sm sm:text-lg md:text-xl font-condensed tracking-widest uppercase"
+          className="flex items-center gap-12 sm:gap-20 animate-marquee text-slate-400 font-medium text-sm sm:text-base tracking-[0.2em] uppercase"
           aria-hidden="true"
         >
-          {marqueeItems.map((item, index) => (
-            <span
-              key={`item2-${index}`}
-              className={
-                item === "//"
-                  ? "text-lime font-mono font-bold text-base sm:text-xl"
-                  : "text-neutral-200 hover:text-lime transition-colors cursor-default"
-              }
-            >
-              {item}
-            </span>
+          {brandList.map((brand, index) => (
+            <div key={`brand2-${index}`} className="flex items-center gap-12 sm:gap-20">
+              <span className="hover:text-violet-300 transition-colors cursor-default opacity-60 hover:opacity-100">
+                {brand}
+              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-violet-500/40" />
+            </div>
           ))}
         </div>
       </div>

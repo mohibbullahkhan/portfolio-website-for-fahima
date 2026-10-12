@@ -1,133 +1,174 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, CheckCircle2, Video, Scissors, Smartphone, Palette, Layers } from "lucide-react";
-import { servicesData } from "@/data/services";
+import { Check, Sparkles, ArrowRight, Zap } from "lucide-react";
 
-const serviceIcons = [Scissors, Smartphone, Palette, Layers];
+const pricingPlans = [
+  {
+    id: "starter",
+    name: "Starter Reels",
+    price: "$499",
+    period: "/ bundle",
+    tagline: "Ideal for creators scaling Instagram Reels, TikTok, and YouTube Shorts.",
+    popular: false,
+    features: [
+      "4 High-Retention Short-Form Cuts",
+      "Dynamic Kinetic Subtitles & Hook Pacing",
+      "Punchy SFX & Beat-Locked Audio",
+      "Optimized 9:16 Vertical Format",
+      "48-Hour Turnaround per Cut",
+      "1 Revision Round Included",
+    ],
+    buttonText: "Get Started",
+    buttonClass: "bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-white",
+  },
+  {
+    id: "pro",
+    name: "Pro Cinematic",
+    price: "$1,249",
+    period: "/ month",
+    tagline: "Complete visual production for high-growth brands and established creators.",
+    popular: true,
+    badge: "MOST POPULAR",
+    features: [
+      "Up to 10 Shorts OR 2 Long-Form Commercials",
+      "12-Bit DaVinci Resolve Color Grading",
+      "Bespoke Spatial Audio & Licensed Music",
+      "Custom Motion Graphics & Lower Thirds",
+      "Multi-Cam Footage Synchronization",
+      "24-48h Expedited Delivery",
+      "2 Revision Rounds per Project",
+    ],
+    buttonText: "Choose Pro Plan",
+    buttonClass:
+      "bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-[0_0_25px_rgba(139,92,246,0.6)]",
+  },
+  {
+    id: "enterprise",
+    name: "Agency Retainer",
+    price: "$2,899",
+    period: "/ month",
+    tagline: "Dedicated turnkey editing partner for production agencies & top companies.",
+    popular: false,
+    features: [
+      "Unlimited Monthly Queue (1 active at a time)",
+      "Dedicated Slack / WhatsApp VIP Channel",
+      "Full Raw Project Handover (Premiere/DaVinci)",
+      "Same-Day Rush Delivery Option",
+      "Custom Brand Motion Template Library",
+      "Unlimited Revisions Until Flawless",
+    ],
+    buttonText: "Start Enterprise",
+    buttonClass: "bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-white",
+  },
+];
 
 export default function Services() {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
   return (
-    <section id="services" className="relative bg-[#25262B] py-24 sm:py-36 px-4 sm:px-6 lg:px-8 border-t border-white/10">
-      {/* Background Subtle Ambience */}
-      <div className="absolute top-1/2 left-0 w-80 h-80 bg-lime/5 rounded-full blur-[140px] pointer-events-none" />
+    <section id="services" className="relative bg-[#060714] py-24 sm:py-32 px-4 sm:px-6 lg:px-8 border-t border-white/[0.06] overflow-hidden">
+      {/* Background Starry & Nebula Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-violet-900/10 rounded-full blur-[200px] pointer-events-none" />
+      <div className="absolute inset-0 pointer-events-none stars-overlay opacity-30" />
 
-      <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 sm:mb-20 gap-6">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-condensed tracking-widest text-lime uppercase mb-4">
-              <Video className="w-3.5 h-3.5" />
-              <span>WHAT I BRING TO YOUR PRODUCTION</span>
-            </div>
-
-            <h2 className="font-display text-5xl sm:text-7xl md:text-8xl tracking-tight uppercase text-white leading-none">
-              CREATIVE <br />
-              <span className="text-lime">SERVICES.</span>
-            </h2>
+      <div className="max-w-6xl mx-auto relative z-10">
+        
+        {/* Header (Matching Screenshot Section 6) */}
+        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-violet-950/50 border border-violet-500/30 text-xs font-medium text-violet-300 uppercase mb-4 backdrop-blur-md">
+            <Sparkles className="w-3.5 h-3.5 text-violet-400" />
+            <span>Investment &amp; Packages</span>
           </div>
 
-          <p className="text-base sm:text-lg text-neutral-400 font-normal max-w-md leading-relaxed">
-            From simple edits to cinematic storytelling, I help transform your raw footage
-            into engaging visual experiences that captivate audiences and drive conversions.
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight">
+            Choose the Perfect <br />
+            <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent purple-text-glow">
+              Plan For Your Needs
+            </span>
+          </h2>
+
+          <p className="mt-4 text-sm sm:text-base text-slate-300 max-w-xl mx-auto font-normal leading-relaxed">
+            Transparent pricing crafted to help you ship consistent, high-performing videos
+            without headache or compromise.
           </p>
         </div>
 
-        {/* Services Editorial List / Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-          {servicesData.map((service, idx) => {
-            const IconComponent = serviceIcons[idx % serviceIcons.length];
-            const isHovered = hoveredIndex === idx;
+        {/* 3 Pricing Cards (Matching Screenshot) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+          {pricingPlans.map((plan, idx) => (
+            <motion.div
+              key={plan.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.15 }}
+              className={`relative rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-500 backdrop-blur-2xl ${
+                plan.popular
+                  ? "bg-[#0f1033]/90 border-2 border-violet-500/70 shadow-[0_0_50px_rgba(139,92,246,0.3)] md:-translate-y-3 z-10"
+                  : "bg-[#0c0d24]/85 border border-white/[0.08] hover:border-violet-500/30 shadow-[0_15px_40px_rgba(0,0,0,0.6)]"
+              }`}
+            >
+              {/* Optional Popular Pill Badge */}
+              {plan.popular && (
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                  <span className="px-4 py-1 rounded-full text-[10px] font-mono uppercase tracking-widest bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-bold shadow-[0_0_15px_rgba(168,85,247,0.6)]">
+                    {plan.badge}
+                  </span>
+                </div>
+              )}
 
-            return (
-              <motion.div
-                key={service.id}
-                onMouseEnter={() => setHoveredIndex(idx)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className={`relative bg-[#1D1E22] rounded-3xl p-8 sm:p-10 border transition-all duration-300 flex flex-col justify-between group overflow-hidden ${
-                  service.popular
-                    ? "border-lime/40 shadow-[0_0_30px_rgba(183,255,0,0.15)]"
-                    : "border-white/10 hover:border-lime/50"
-                }`}
-              >
-                {/* Background Number Watermark */}
-                <span className="absolute right-4 bottom-2 font-display text-8xl sm:text-9xl text-white/[0.03] select-none pointer-events-none group-hover:text-lime/[0.08] transition-colors">
-                  {service.number}
-                </span>
-
-                {/* Popular Pill */}
-                {service.popular && (
-                  <div className="absolute top-6 right-8">
-                    <span className="px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider bg-lime text-black font-bold">
-                      MOST REQUESTED
-                    </span>
-                  </div>
-                )}
-
-                <div>
-                  {/* Top Line: Number & Icon */}
-                  <div className="flex items-center justify-between mb-8">
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-lime group-hover:bg-lime group-hover:text-black transition-all duration-300">
-                      <IconComponent className="w-6 h-6" />
-                    </div>
-
-                    <span className="font-display text-4xl text-neutral-500 group-hover:text-lime transition-colors">
-                      {service.number}
-                    </span>
-                  </div>
-
-                  {/* Title & Description */}
-                  <h3 className="font-condensed text-3xl sm:text-4xl font-bold uppercase tracking-wide text-white group-hover:text-lime transition-colors">
-                    {service.title}
+              <div>
+                {/* Plan Header */}
+                <div className="mb-6">
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
+                    {plan.name}
                   </h3>
-
-                  <p className="mt-4 text-sm sm:text-base text-neutral-400 font-normal leading-relaxed">
-                    {service.shortDescription}
+                  <p className="text-xs text-slate-400 leading-relaxed min-h-[36px]">
+                    {plan.tagline}
                   </p>
+                </div>
 
-                  {/* Key Deliverables Bullet List */}
-                  <div className="mt-6 pt-6 border-t border-white/10 space-y-2.5">
-                    {service.deliverables.map((item, itemIdx) => (
-                      <div key={itemIdx} className="flex items-center gap-2.5 text-xs sm:text-sm text-neutral-300">
-                        <CheckCircle2 className="w-4 h-4 text-lime shrink-0" />
-                        <span>{item}</span>
+                {/* Price Display */}
+                <div className="flex items-baseline gap-1 mb-6 pb-6 border-b border-white/[0.08]">
+                  <span className="text-4xl sm:text-5xl font-bold text-white tracking-tight">
+                    {plan.price}
+                  </span>
+                  <span className="text-xs font-mono text-slate-400">
+                    {plan.period}
+                  </span>
+                </div>
+
+                {/* Feature Checklist */}
+                <div className="space-y-3 mb-8">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-violet-300 block mb-2">
+                    INCLUDED SERVICES:
+                  </span>
+                  {plan.features.map((feat, fIdx) => (
+                    <div key={fIdx} className="flex items-start gap-2.5 text-xs text-slate-300">
+                      <div className="w-4 h-4 rounded-full bg-violet-950/80 border border-violet-500/40 flex items-center justify-center shrink-0 mt-0.5 text-violet-300">
+                        <Check className="w-2.5 h-2.5 stroke-[3]" />
                       </div>
-                    ))}
-                  </div>
+                      <span className="leading-snug">{feat}</span>
+                    </div>
+                  ))}
                 </div>
+              </div>
 
-                {/* Tools & CTA Footer */}
-                <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between">
-                  <div className="flex flex-wrap gap-1.5">
-                    {service.tools.map((tool, toolIdx) => (
-                      <span
-                        key={toolIdx}
-                        className="text-[10px] font-mono text-neutral-400 bg-white/5 px-2 py-0.5 rounded border border-white/5"
-                      >
-                        {tool}
-                      </span>
-                    ))}
-                  </div>
-
-                  <a
-                    href="#contact"
-                    className="inline-flex items-center gap-1 text-xs font-condensed tracking-widest font-bold uppercase text-lime group-hover:text-white transition-colors"
-                  >
-                    <span>INQUIRE</span>
-                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </a>
-                </div>
-              </motion.div>
-            );
-          })}
+              {/* Bottom CTA Button */}
+              <div className="pt-2">
+                <Link
+                  href="#contact"
+                  className={`w-full py-3.5 rounded-full font-medium text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-300 ${plan.buttonClass}`}
+                >
+                  <span>{plan.buttonText}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </motion.div>
+          ))}
         </div>
+
       </div>
     </section>
   );

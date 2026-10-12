@@ -1,26 +1,5 @@
 import type { Metadata } from "next";
-import { Anton, Bebas_Neue, Inter } from "next/font/google";
 import "./globals.css";
-
-const anton = Anton({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-anton",
-  display: "swap",
-});
-
-const bebas = Bebas_Neue({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-bebas",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "FAHIMA — Video Editor & Creative Storyteller",
@@ -73,8 +52,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${anton.variable} ${bebas.variable} ${inter.variable}`}>
-      <body className="bg-background text-primaryText antialiased min-h-screen selection:bg-lime selection:text-black">
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="bg-background text-primaryText antialiased min-h-screen selection:bg-brand-violet selection:text-white">
         {children}
       </body>
     </html>

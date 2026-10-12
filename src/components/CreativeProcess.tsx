@@ -1,109 +1,136 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { Search, Film, Sliders, CheckCircle2, ArrowRight } from "lucide-react";
-import { ProcessStep } from "@/types";
+import { Sparkles, ArrowRight, Wand2, Sliders, Volume2 } from "lucide-react";
 
-const steps: ProcessStep[] = [
+const processSteps = [
   {
-    number: "01",
-    phase: "DISCOVER",
-    title: "Understanding the project, vision, and requirements.",
-    description: "We align on your creative goals, brand voice, target audience, references, key messaging, and timeline constraints.",
-    details: ["Script & Asset Ingestion", "Reference Moodboarding", "Pacing & Tone Alignment"],
+    step: "01",
+    label: "Step One",
+    title: "Turn Text into Video",
+    subtitle: "Concept, Script & Blueprint",
+    description:
+      "Input your creative vision, script, and raw footage. We define the mood, pacing rhythm, and narrative arc to captivate your audience from the opening frame.",
+    glowColor: "from-amber-500/20 via-orange-500/10 to-transparent",
+    bottomImage: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
+    imageAlt: "Warm golden glowing lantern visual for concept",
+    accentGlow: "shadow-[0_0_30px_rgba(245,158,11,0.2)]",
+    tag: "Concept & Script",
   },
   {
-    number: "02",
-    phase: "CREATE",
-    title: "Organizing footage and developing the editing direction.",
-    description: "Reviewing all raw takes, selecting the best angles, assembling the narrative timeline backbone, and building the initial rough cut.",
-    details: ["Footage Culling & Logging", "Assembly Cut & Structure", "Story Arc Construction"],
+    step: "02",
+    label: "Step Two",
+    title: "Fine-tune the Details",
+    subtitle: "Precision Cut & Motion Pacing",
+    description:
+      "Frame-accurate cuts, dynamic speed ramping, and seamless match transitions locked to the audio beat to hook viewers in the crucial first 3 seconds.",
+    glowColor: "from-blue-500/20 via-indigo-500/10 to-transparent",
+    bottomImage: "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=600&q=80",
+    imageAlt: "Cool blue holographic figure visual for precision cut",
+    accentGlow: "shadow-[0_0_30px_rgba(59,130,246,0.2)]",
+    tag: "Cut & Assembly",
   },
   {
-    number: "03",
-    phase: "REFINE",
-    title: "Perfecting transitions, colors, sound, and details.",
-    description: "Fine-tuning cuts to the beat, performing 12-bit cinematic color grading, mixing audio effects, and polishing visual motion graphics.",
-    details: ["Match Cuts & Speed Ramping", "Film LUT Color Grading", "Bass & Foley Sound Mixing"],
-  },
-  {
-    number: "04",
-    phase: "DELIVER",
-    title: "Exporting polished, platform-ready videos.",
-    description: "Delivering mastered 4K master files, optimized vertical 9:16 cuts with burnt-in captions, and archive assets ready for distribution.",
-    details: ["Multi-Format Exports", "Platform Optimization", "Project Archive Delivery"],
+    step: "03",
+    label: "Step Three",
+    title: "Generate the Final Cut",
+    subtitle: "Color Grade & Spatial Sound",
+    description:
+      "12-bit DaVinci Resolve film LUT color grading, skin tone isolation, punchy spatial foley sound design, and master rendering in 4K ProRes.",
+    glowColor: "from-purple-500/20 via-fuchsia-500/10 to-transparent",
+    bottomImage: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80",
+    imageAlt: "Radiant crimson glowing ember sphere visual for color grade",
+    accentGlow: "shadow-[0_0_30px_rgba(168,85,247,0.2)]",
+    tag: "Grade & Sound",
   },
 ];
 
 export default function CreativeProcess() {
   return (
-    <section id="process" className="relative bg-[#1D1E22] py-24 sm:py-36 px-4 sm:px-6 lg:px-8 border-t border-white/10 overflow-hidden">
-      {/* Subtle Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-lime/5 rounded-full blur-[160px] pointer-events-none" />
+    <section id="process" className="relative bg-[#060714] py-24 sm:py-32 px-4 sm:px-6 lg:px-8 border-t border-white/[0.06] overflow-hidden">
+      {/* Background Starry & Nebula Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-violet-900/10 rounded-full blur-[200px] pointer-events-none" />
+      <div className="absolute inset-0 pointer-events-none stars-overlay opacity-30" />
 
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-24">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-condensed tracking-widest text-lime uppercase mb-4">
-            <span>METHODOLOGY</span>
+      <div className="max-w-6xl mx-auto relative z-10">
+        {/* Header (Matching Screenshot Section 4) */}
+        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-violet-950/50 border border-violet-500/30 text-xs font-medium text-violet-300 uppercase mb-4 backdrop-blur-md">
+            <Sparkles className="w-3.5 h-3.5 text-violet-400" />
+            <span>Post-Production Pipeline</span>
           </div>
 
-          <h2 className="font-display text-5xl sm:text-7xl md:text-8xl tracking-tight uppercase text-white leading-none">
-            FROM IDEA <br />
-            <span className="text-lime">TO FINAL FRAME.</span>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight">
+            Transform Imagination into Reality: <br />
+            <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent purple-text-glow">
+              Steps to Build
+            </span>
           </h2>
 
-          <p className="mt-6 text-base sm:text-lg text-neutral-400 font-normal leading-relaxed">
-            A structured, collaborative post-production workflow engineered to deliver
-            cinematic excellence on schedule, every single time.
+          <p className="mt-4 text-sm sm:text-base text-slate-300 max-w-xl mx-auto font-normal leading-relaxed">
+            Turn your concepts into high-quality videos in three simple, transparent steps — engineered
+            to take your raw footage from idea to viral delivery.
           </p>
         </div>
 
-        {/* Process Timeline Flow */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
-          {steps.map((step, idx) => (
+        {/* 3 Vertical Cards (Matching Screenshot) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+          {processSteps.map((item, idx) => (
             <motion.div
-              key={step.number}
+              key={item.step}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.12 }}
-              className="bg-[#25262B] rounded-3xl p-6 sm:p-8 border border-white/10 hover:border-lime/50 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden"
+              transition={{ duration: 0.5, delay: idx * 0.15 }}
+              className={`group relative bg-[#0c0d24]/90 rounded-3xl border border-white/[0.08] hover:border-violet-500/40 p-6 sm:p-7 flex flex-col justify-between overflow-hidden backdrop-blur-xl transition-all duration-500 hover:-translate-y-1.5 shadow-[0_15px_40px_rgba(0,0,0,0.6)] ${item.accentGlow}`}
             >
-              {/* Top Step Indicator */}
+              {/* Top Step Card Header */}
               <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-display text-4xl sm:text-5xl text-neutral-500 group-hover:text-lime transition-colors">
-                    {step.number}
+                <div className="flex items-center justify-between mb-5">
+                  <span className="px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider bg-white/[0.04] text-violet-300 border border-white/[0.08]">
+                    {item.label}
                   </span>
-
-                  <span className="px-2.5 py-1 rounded-full text-[10px] font-mono tracking-widest uppercase bg-lime/10 text-lime border border-lime/20">
-                    STEP {step.number}
+                  <span className="font-mono text-xl sm:text-2xl font-bold text-slate-500 group-hover:text-violet-400 transition-colors">
+                    {item.step}
                   </span>
                 </div>
 
-                <h3 className="font-condensed text-2xl sm:text-3xl font-bold uppercase tracking-wide text-white group-hover:text-lime transition-colors">
-                  {step.phase}
+                <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-violet-300 transition-colors mb-1.5">
+                  {item.title}
                 </h3>
 
-                <p className="mt-3 text-xs sm:text-sm text-neutral-300 font-medium leading-snug">
-                  {step.title}
-                </p>
+                <span className="text-xs font-mono uppercase tracking-wider text-violet-400 block mb-3 font-medium">
+                  {item.subtitle}
+                </span>
 
-                <p className="mt-3 text-xs sm:text-sm text-neutral-400 font-normal leading-relaxed">
-                  {step.description}
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+                  {item.description}
                 </p>
               </div>
 
-              {/* Details Tags */}
-              <div className="mt-6 pt-4 border-t border-white/10 space-y-1.5">
-                {step.details.map((detail, dIdx) => (
-                  <div key={dIdx} className="flex items-center gap-2 text-[11px] font-mono text-neutral-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-lime" />
-                    <span>{detail}</span>
-                  </div>
-                ))}
+              {/* Bottom Glowing Artwork Visual */}
+              <div className="mt-8 pt-4 relative aspect-[4/3] rounded-2xl overflow-hidden bg-black/60 border border-white/[0.06] group-hover:border-violet-500/30 transition-colors">
+                <Image
+                  src={item.bottomImage}
+                  alt={item.imageAlt}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100"
+                />
+
+                {/* Bottom Radial Gradient Flare */}
+                <div className={`absolute inset-0 bg-gradient-to-t ${item.glowColor} pointer-events-none`} />
+
+                {/* Inner Overlay Vignette */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0c0d24] via-transparent to-black/30 pointer-events-none" />
+
+                {/* Bottom Tag */}
+                <div className="absolute bottom-3 left-3 z-10">
+                  <span className="px-2.5 py-1 rounded-md text-[10px] font-mono uppercase tracking-wider bg-black/80 backdrop-blur-md text-slate-200 border border-white/10">
+                    {item.tag}
+                  </span>
+                </div>
               </div>
             </motion.div>
           ))}
