@@ -3,8 +3,9 @@ import { servicesData } from "@/data/services";
 import { testimonialsData } from "@/data/testimonials";
 import { Project, Service, Testimonial } from "@/types";
 
-const API_BASE_URL =
+const RAW_API_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+const API_BASE_URL = RAW_API_URL.replace(/\/$/, "");
 
 export interface ApiCategory {
   id: string;
