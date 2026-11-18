@@ -43,11 +43,11 @@ export default function ContactCTA() {
               </Link>
 
               <a
-                href="mailto:contact@fahimaedits.com"
+                href="mailto:aminakhan.743634@gmail.com"
                 className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-[#262626] hover:bg-[#333333] text-[#FFFFFF] font-semibold text-sm tracking-tight border border-white/10 transition-colors"
               >
                 <Mail className="w-4 h-4 text-[#84CC16]" />
-                <span>contact@fahimaedits.com</span>
+                <span>aminakhan.743634@gmail.com</span>
               </a>
             </div>
           </div>

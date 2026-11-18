@@ -82,7 +82,7 @@ export default function ContactForm({ settings }: ContactFormProps) {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const email = settings?.contactEmail || "hello@fahimaedits.com";
+  const email = settings?.contactEmail || "aminakhan.743634@gmail.com";
   const phone = settings?.phone || "+44 7000 000000";
   const location = settings?.location || "Remote & Worldwide (US, UK, AUS)";
 

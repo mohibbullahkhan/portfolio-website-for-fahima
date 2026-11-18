@@ -17,7 +17,7 @@ export default function FloatingQuickContact({ settings }: FloatingQuickContactP
   const whatsappUrl = `https://wa.me/${cleanNumber}?text=${encodeURIComponent(
     "Hi Fahima! I was viewing your video editor portfolio and would love to discuss a project with you."
   )}`;
-  const email = settings?.contactEmail || "hello@fahimaedits.com";
+  const email = settings?.contactEmail || "aminakhan.743634@gmail.com";
 
   return (
     <div className="fixed bottom-5 right-5 sm:bottom-7 sm:right-7 z-40">

@@ -249,7 +249,7 @@ export async function getTestimonials(): Promise<Testimonial[]> {
 export async function getSettings(): Promise<ApiSettings> {
   return fetchWithFallback<ApiSettings>("/settings", {
     siteName: "Fahima | Video Editor",
-    contactEmail: "hello@fahimaedits.com",
+    contactEmail: "aminakhan.743634@gmail.com",
     location: "Remote / Worldwide (US, UK, AUS)",
     footerText:
       "© 2026 Fahima. All rights reserved. Cinematic storytelling for high-growth creators.",

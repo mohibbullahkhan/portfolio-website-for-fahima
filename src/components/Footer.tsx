@@ -17,7 +17,7 @@ export default function Footer({ settings }: FooterProps) {
   };
 
   const brandName = settings?.siteName || "FAHIMA";
-  const email = settings?.contactEmail || "hello@fahimaedits.com";
+  const email = settings?.contactEmail || "aminakhan.743634@gmail.com";
   const footerText =
     settings?.footerText ||
     `© ${currentYear} ${brandName}. All rights reserved. Post-production for ambitious creators & brands.`;
