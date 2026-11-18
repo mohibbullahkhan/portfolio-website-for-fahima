@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Film } from "lucide-react";
+import { Film, ChevronDown, ChevronUp } from "lucide-react";
 import { projectsData } from "@/data/projects";
 import { Project } from "@/types";
 import { ApiCategory } from "@/lib/api";
@@ -14,12 +14,15 @@ interface PreviousWorkProps {
   categories?: ApiCategory[];
 }
 
+const INITIAL_PROJECT_COUNT = 6;
+
 export default function PreviousWork({
   projects = projectsData,
   categories = [],
 }: PreviousWorkProps) {
   const [activeCategory, setActiveCategory] = useState<string>("All Projects");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
   const displayProjects = projects && projects.length > 0 ? projects : projectsData;
 
@@ -44,10 +47,21 @@ export default function PreviousWork({
       ? displayProjects
       : displayProjects.filter((p) => p.category === activeCategory);
 
+  const visibleProjects = showAll
+    ? filteredProjects
+    : filteredProjects.slice(0, INITIAL_PROJECT_COUNT);
+
+  const hasMore = filteredProjects.length > INITIAL_PROJECT_COUNT;
+
+  const handleCategoryChange = (category: string) => {
+    setActiveCategory(category);
+    setShowAll(false);
+  };
+
   return (
     <section
       id="work"
-      className="relative bg-[#F8F8F5] py-24 sm:py-32 px-4 sm:px-6 lg:px-8 border-t border-[#E5E5DF]"
+      className="relative bg-[#F8F8F5] py-20 sm:py-28 px-4 sm:px-6 lg:px-8 border-t border-[#E5E5DF]"
     >
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
@@ -76,7 +90,7 @@ export default function PreviousWork({
               return (
                 <button
                   key={category}
-                  onClick={() => setActiveCategory(category)}
+                  onClick={() => handleCategoryChange(category)}
                   className={`relative px-4 sm:px-5 py-2 rounded-full text-xs font-semibold tracking-tight transition-all duration-200 whitespace-nowrap focus:outline-none ${
                     isActive
                       ? "text-[#F8F8F5]"
@@ -100,7 +114,7 @@ export default function PreviousWork({
         {/* Project Gallery Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, index) => (
+            {visibleProjects.map((project, index) => (
               <ProjectCard
                 key={project.id}
                 project={project}
@@ -111,11 +125,33 @@ export default function PreviousWork({
           </AnimatePresence>
         </div>
 
+        {/* Empty State */}
         {filteredProjects.length === 0 && (
           <div className="text-center py-20 bg-[#FFFFFF] rounded-2xl border border-[#E5E5DF]">
             <Film className="w-10 h-10 text-[#999999] mx-auto mb-3" />
             <p className="text-base font-semibold text-[#171717]">No projects found in this category</p>
             <p className="text-sm text-[#777777] mt-1">Select &ldquo;All Projects&rdquo; to browse the full archive.</p>
+          </div>
+        )}
+
+        {/* Show More / Show Less Button */}
+        {hasMore && (
+          <div className="mt-14 sm:mt-16 text-center">
+            <button
+              onClick={() => setShowAll((prev) => !prev)}
+              className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-[#171717] hover:bg-black text-[#F8F8F5] text-sm font-semibold tracking-tight transition-all shadow-md hover:shadow-lg active:scale-95"
+            >
+              <span>
+                {showAll
+                  ? "Show Less"
+                  : `Show More Projects (${filteredProjects.length - INITIAL_PROJECT_COUNT} More)`}
+              </span>
+              {showAll ? (
+                <ChevronUp className="w-4 h-4" />
+              ) : (
+                <ChevronDown className="w-4 h-4" />
+              )}
+            </button>
           </div>
         )}
       </div>

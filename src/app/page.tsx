@@ -4,11 +4,9 @@ import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
 import PreviousWork from "@/components/PreviousWork";
 import Services from "@/components/Services";
-import BeforeAfterSlider from "@/components/BeforeAfterSlider";
 import ComparisonTable from "@/components/ComparisonTable";
 import About from "@/components/About";
 import CreativeProcess from "@/components/CreativeProcess";
-import PricingCalculator from "@/components/PricingCalculator";
 import Testimonials from "@/components/Testimonials";
 import FAQAccordion from "@/components/FAQAccordion";
 import ContactCTA from "@/components/ContactCTA";
@@ -45,49 +43,43 @@ export default async function Home() {
       {/* 01 Minimal Luxury Navbar */}
       <Navbar settings={settings} />
 
-      {/* 02 Editorial Hero & Cinematic Showreel Showcase */}
+      {/* 02 Editorial Hero (Headline, Copy, CTAs) */}
       <Hero hero={hero} />
 
-      {/* 03 Post-Production Standards Marquee */}
-      <Marquee />
-
-      {/* 04 Selected Work Portfolio Showcase */}
+      {/* 03 Selected Work Portfolio Showcase (6 initial + Show More) */}
       <PreviousWork projects={projects} categories={categories} />
+
+      {/* 04 Post-Production Standards Marquee */}
+      <Marquee />
 
       {/* 05 Core Services: What I Can Do */}
       <Services services={services} />
 
-      {/* 06 Interactive Color Science & Transformation Slider */}
-      <BeforeAfterSlider />
-
-      {/* 07 Why Work With Me (The Direct Editor Advantage) */}
+      {/* 06 Why Work With Me (The Direct Editor Advantage) */}
       <ComparisonTable />
 
-      {/* 08 About the Editor (Bio, Philosophy, Values) */}
+      {/* 07 About the Editor (Bio, Philosophy, Values) */}
       <About profile={profile} />
 
-      {/* 09 Working Process (4-Stage Pipeline) */}
+      {/* 08 Working Process (4-Stage Pipeline) */}
       <CreativeProcess />
 
-      {/* 10 Transparent Project Cost Estimator */}
-      <PricingCalculator />
-
-      {/* 11 Client & Collaborator Feedback */}
+      {/* 09 Client & Collaborator Feedback */}
       <Testimonials testimonials={testimonials} />
 
-      {/* 12 Frequently Asked Questions */}
+      {/* 10 Frequently Asked Questions */}
       <FAQAccordion />
 
-      {/* 13 High-Impact Conversion CTA */}
+      {/* 11 High-Impact Conversion CTA */}
       <ContactCTA />
 
-      {/* 14 High-Priority Project Briefing & Inquiry Form */}
+      {/* 12 High-Priority Project Briefing & Inquiry Form (Email + Phone) */}
       <ContactForm settings={settings} />
 
-      {/* 15 Minimalist Luxury Studio Footer */}
+      {/* 13 Minimalist Luxury Studio Footer */}
       <Footer settings={settings} />
 
-      {/* 16 Floating Quick Contact Messenger */}
+      {/* 14 Floating Quick Contact Messenger */}
       <FloatingQuickContact settings={settings} />
     </main>
   );
