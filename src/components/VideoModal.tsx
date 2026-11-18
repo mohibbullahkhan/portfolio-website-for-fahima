@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Play, Clock, Calendar, ExternalLink, Sparkles } from "lucide-react";
+import { X, Clock, Calendar, ExternalLink } from "lucide-react";
 import { Project } from "@/types";
 import { extractVideoId } from "@/lib/utils";
 
@@ -35,11 +35,11 @@ export default function VideoModal({ project, onClose }: VideoModalProps) {
   if (!project) return null;
 
   const renderPlayer = () => {
-    if (project.videoType === "youtube") {
+    if (project.videoType === "youtube" || project.videoUrl.includes("youtu")) {
       const videoId = extractVideoId(project.videoUrl, "youtube");
       return (
         <iframe
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`}
+          src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`}
           title={project.title}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
@@ -52,7 +52,7 @@ export default function VideoModal({ project, onClose }: VideoModalProps) {
       const videoId = extractVideoId(project.videoUrl, "vimeo");
       return (
         <iframe
-          src={`https://player.vimeo.com/video/${videoId}?autoplay=1&color=8b5cf6`}
+          src={`https://player.vimeo.com/video/${videoId}?autoplay=1&color=84CC16`}
           title={project.title}
           allow="autoplay; fullscreen; picture-in-picture"
           allowFullScreen
@@ -83,82 +83,99 @@ export default function VideoModal({ project, onClose }: VideoModalProps) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="absolute inset-0 bg-[#060714]/90 backdrop-blur-xl"
+          className="absolute inset-0 bg-[#090909]/85 backdrop-blur-md"
         />
 
-        {/* Modal Window */}
+        {/* Modal Dialog */}
         <motion.div
-          initial={{ scale: 0.95, opacity: 0, y: 20 }}
+          initial={{ scale: 0.96, opacity: 0, y: 15 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.95, opacity: 0, y: 20 }}
-          transition={{ type: "spring", duration: 0.4, bounce: 0.15 }}
-          className="relative w-full max-w-5xl bg-[#0b0c24] border border-violet-500/30 rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_0_80px_rgba(139,92,246,0.3)] z-10 flex flex-col max-h-[92vh]"
+          exit={{ scale: 0.96, opacity: 0, y: 15 }}
+          transition={{ type: "spring", duration: 0.35, bounce: 0.1 }}
+          className="relative w-full max-w-5xl bg-[#171717] border border-[#262626] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl z-10 flex flex-col max-h-[92vh]"
         >
           {/* Top Bar with Title & Close Button */}
-          <div className="flex items-center justify-between px-5 py-4 bg-[#0e0f2d] border-b border-white/[0.08]">
+          <div className="flex items-center justify-between px-5 py-4 bg-[#1F1F1F] border-b border-[#2E2E2E]">
             <div className="flex items-center gap-3">
-              <span className="w-2.5 h-2.5 rounded-full bg-violet-400 animate-pulse shadow-[0_0_10px_rgba(168,85,247,0.8)]" />
-              <div>
-                <h3 className="text-base sm:text-lg font-bold tracking-wide text-white uppercase">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#84CC16] animate-pulse" />
+              <div className="flex flex-col">
+                <span className="text-sm sm:text-base font-bold text-[#F8F8F5] leading-tight">
                   {project.title}
-                </h3>
-                <span className="text-[11px] font-mono text-violet-300">
-                  {project.category} • {project.duration || "01:30"}
+                </span>
+                <span className="text-[10px] tracking-wider text-[#999999] uppercase">
+                  {project.category} • 4K DCI MASTER
                 </span>
               </div>
             </div>
 
             <button
               onClick={onClose}
-              className="p-2 rounded-full bg-white/5 hover:bg-violet-600 hover:text-white text-slate-300 transition-colors focus:outline-none"
-              aria-label="Close video player"
+              className="p-2 rounded-full bg-[#262626] hover:bg-[#333333] text-[#F8F8F5] transition-colors"
+              aria-label="Close modal"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
 
-          {/* Video Player Container */}
-          <div className="relative w-full aspect-video bg-black overflow-hidden flex items-center justify-center">
+          {/* Video Container (16:9) */}
+          <div className="relative aspect-video w-full bg-black overflow-hidden flex items-center justify-center">
             {renderPlayer()}
           </div>
 
-          {/* Project Details Footer */}
-          <div className="p-5 sm:p-6 bg-[#0b0c24] overflow-y-auto">
-            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-              <div className="flex-1">
-                <span className="inline-block px-3 py-0.5 rounded-full text-[10px] font-mono bg-violet-950/60 text-violet-300 border border-violet-500/30 uppercase mb-2">
-                  {project.category}
-                </span>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  {project.fullDescription || project.shortDescription}
+          {/* Bottom Details Drawer */}
+          <div className="p-5 sm:p-6 bg-[#171717] overflow-y-auto">
+            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+              <div className="max-w-2xl">
+                <h4 className="text-sm font-semibold text-[#84CC16] uppercase tracking-wider mb-1">
+                  Project Notes & Creative Direction
+                </h4>
+                <p className="text-xs sm:text-sm text-[#CCCCCC] leading-relaxed">
+                  {project.fullDescription || project.shortDescription || (project as any).description}
                 </p>
-              </div>
 
-              {/* Meta Chips */}
-              <div className="flex flex-wrap sm:flex-col items-start sm:items-end gap-2 text-xs font-mono text-slate-400 min-w-[200px]">
-                {project.year && (
-                  <span className="flex items-center gap-1.5 bg-white/[0.04] px-3 py-1 rounded-full border border-white/[0.08]">
-                    <Calendar className="w-3.5 h-3.5 text-violet-400" />
-                    <span>YEAR: {project.year}</span>
-                  </span>
-                )}
-                {project.duration && (
-                  <span className="flex items-center gap-1.5 bg-white/[0.04] px-3 py-1 rounded-full border border-white/[0.08]">
-                    <Clock className="w-3.5 h-3.5 text-violet-400" />
-                    <span>RUNTIME: {project.duration}</span>
-                  </span>
-                )}
-                {project.softwareUsed && (
-                  <div className="flex flex-wrap gap-1 mt-1 justify-end">
-                    {project.softwareUsed.map((tool, i) => (
+                {(project.softwareUsed || (project as any).tags) && (
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {(project.softwareUsed || (project as any).tags).map((tag: string, idx: number) => (
                       <span
-                        key={i}
-                        className="text-[9px] bg-white/[0.04] text-slate-300 px-2.5 py-0.5 rounded-full border border-white/[0.08]"
+                        key={idx}
+                        className="px-2.5 py-1 text-[11px] font-medium text-[#CCCCCC] bg-[#222222] rounded-md border border-[#333333]"
                       >
-                        {tool}
+                        {tag}
                       </span>
                     ))}
                   </div>
+                )}
+              </div>
+
+              {/* Meta stats */}
+              <div className="flex flex-wrap md:flex-col gap-3 text-xs text-[#999999] border-t md:border-t-0 md:border-l border-[#262626] pt-3 md:pt-0 md:pl-6 shrink-0">
+                {project.duration && (
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-3.5 h-3.5 text-[#84CC16]" />
+                    <span>Duration: {project.duration}</span>
+                  </div>
+                )}
+                {project.year && (
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-3.5 h-3.5 text-[#84CC16]" />
+                    <span>Year: {project.year}</span>
+                  </div>
+                )}
+                {project.client && (
+                  <div className="text-white/80">
+                    <span className="text-[#777777]">Client:</span> {project.client}
+                  </div>
+                )}
+                {(project.videoUrl || (project as any).youtubeUrl) && (
+                  <a
+                    href={project.videoUrl || (project as any).youtubeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs text-[#84CC16] hover:underline pt-1"
+                  >
+                    <span>View on Source</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
                 )}
               </div>
             </div>

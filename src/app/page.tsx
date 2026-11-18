@@ -2,94 +2,93 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
-import Introduction from "@/components/Introduction";
-import ClientMetrics from "@/components/ClientMetrics";
-import FeaturedImpressions from "@/components/FeaturedImpressions";
-import BeforeAfterSlider from "@/components/BeforeAfterSlider";
 import PreviousWork from "@/components/PreviousWork";
-import CreativeProcess from "@/components/CreativeProcess";
-import SeamlessEditing from "@/components/SeamlessEditing";
-import PricingCalculator from "@/components/PricingCalculator";
 import Services from "@/components/Services";
+import BeforeAfterSlider from "@/components/BeforeAfterSlider";
 import ComparisonTable from "@/components/ComparisonTable";
-import Testimonials from "@/components/Testimonials";
-import FreeSampleOffer from "@/components/FreeSampleOffer";
-import EditingExpertise from "@/components/EditingExpertise";
 import About from "@/components/About";
+import CreativeProcess from "@/components/CreativeProcess";
+import PricingCalculator from "@/components/PricingCalculator";
+import Testimonials from "@/components/Testimonials";
 import FAQAccordion from "@/components/FAQAccordion";
 import ContactCTA from "@/components/ContactCTA";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 import FloatingQuickContact from "@/components/FloatingQuickContact";
+import {
+  getHero,
+  getProfile,
+  getProjects,
+  getCategories,
+  getServices,
+  getTestimonials,
+  getSettings,
+} from "@/lib/api";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  // Concurrently fetch CMS content with built-in fallback resilience
+  const [hero, profile, projects, categories, services, testimonials, settings] =
+    await Promise.all([
+      getHero(),
+      getProfile(),
+      getProjects(),
+      getCategories(),
+      getServices(),
+      getTestimonials(),
+      getSettings(),
+    ]);
+
   return (
-    <main className="min-h-screen bg-[#060714] text-[#F8FAFC] overflow-x-hidden selection:bg-violet-600 selection:text-white relative">
-      {/* 01 Floating Frosted Navigation */}
-      <Navbar />
+    <main className="min-h-screen bg-[#F8F8F5] text-[#171717] overflow-x-hidden selection:bg-[#171717] selection:text-[#F8F8F5] relative font-sans">
+      {/* 01 Minimal Luxury Navbar */}
+      <Navbar settings={settings} />
 
-      {/* 02 Hero Section: Bring Your Ideas to Life with AI Video Magic */}
-      <Hero />
+      {/* 02 Editorial Hero & Cinematic Showreel Showcase */}
+      <Hero hero={hero} />
 
-      {/* 03 Monochromatic Brand & Industry Tools Marquee */}
+      {/* 03 Post-Production Standards Marquee */}
       <Marquee />
 
-      {/* 04 Giant Animated Editorial Typography: CREATE, EDIT, AND SHARE */}
-      <Introduction />
+      {/* 04 Selected Work Portfolio Showcase */}
+      <PreviousWork projects={projects} categories={categories} />
 
-      {/* 05 Proof of Performance & Organic Views Metrics Bar */}
-      <ClientMetrics />
+      {/* 05 Core Services: What I Can Do */}
+      <Services services={services} />
 
-      {/* 06 Featured Impressions: Videos That Leave A Lasting Impression (4-card showcase) */}
-      <FeaturedImpressions />
-
-      {/* 07 Interactive Before / After Color Grading & Cut Transformation Slider */}
+      {/* 06 Interactive Color Science & Transformation Slider */}
       <BeforeAfterSlider />
 
-      {/* 08 Interactive Portfolio Gallery: Where Human Imagination Meets Creative Storytelling */}
-      <PreviousWork />
-
-      {/* 09 Creative Process: Transform Imagination into Reality - Steps to Build (3 vertical cards) */}
-      <CreativeProcess />
-
-      {/* 10 Capabilities Suite: Boundless Creativity - Ready When You Are */}
-      <SeamlessEditing />
-
-      {/* 11 Interactive Project Cost & Quotation Calculator (with WhatsApp 1-Click Lock) */}
-      <PricingCalculator />
-
-      {/* 12 Pricing & Investment: Choose the Perfect Plan For Your Needs */}
-      <Services />
-
-      {/* 13 Why Choose Fahima: Direct Comparison Table vs Cheap Freelancers vs Agencies */}
+      {/* 07 Why Work With Me (The Direct Editor Advantage) */}
       <ComparisonTable />
 
-      {/* 14 Client & Creator Testimonials: Your Gateway to Revolutionary Video Creation */}
-      <Testimonials />
+      {/* 08 About the Editor (Bio, Philosophy, Values) */}
+      <About profile={profile} />
 
-      {/* 15 High-Converting Risk-Reversal: Free 15-Second Test Cut Offer */}
-      <FreeSampleOffer />
+      {/* 09 Working Process (4-Stage Pipeline) */}
+      <CreativeProcess />
 
-      {/* 16 Guarantees & Support: All The Support You Need, Always Within Reach (2x2 grid) */}
-      <EditingExpertise />
+      {/* 10 Transparent Project Cost Estimator */}
+      <PricingCalculator />
 
-      {/* 17 Behind The Timeline: About Fahima & Storytelling Philosophy */}
-      <About />
+      {/* 11 Client & Collaborator Feedback */}
+      <Testimonials testimonials={testimonials} />
 
-      {/* 18 Frequently Asked Questions Accordion */}
+      {/* 12 Frequently Asked Questions */}
       <FAQAccordion />
 
-      {/* 19 Cosmic Pre-Footer Banner: Leading The Way In Video Creation */}
+      {/* 13 High-Impact Conversion CTA */}
       <ContactCTA />
 
-      {/* 20 Direct Project Inquiry & Contact Form */}
-      <ContactForm />
+      {/* 14 High-Priority Project Briefing & Inquiry Form */}
+      <ContactForm settings={settings} />
 
-      {/* 21 Cosmic Starry Footer with Socials */}
-      <Footer />
+      {/* 15 Minimalist Luxury Studio Footer */}
+      <Footer settings={settings} />
 
-      {/* 22 Sticky Floating WhatsApp & Fast Inquiry Conversion Widget */}
-      <FloatingQuickContact />
+      {/* 16 Floating Quick Contact Messenger */}
+      <FloatingQuickContact settings={settings} />
     </main>
   );
 }

@@ -1,10 +1,10 @@
 export type ProjectCategory =
   | "All Projects"
-  | "Reels & Shorts"
-  | "Social Media Videos"
-  | "Promotional Videos"
-  | "Cinematic Editing"
-  | "Commercial Videos";
+  | "Long-Form"
+  | "Short-Form & Reels"
+  | "Commercial"
+  | "Podcast"
+  | "Motion Graphics";
 
 export interface Project {
   id: string;
@@ -28,10 +28,12 @@ export interface Service {
   id: string;
   number: string;
   title: string;
+  tagline: string;
   shortDescription: string;
   deliverables: string[];
   tools: string[];
   popular?: boolean;
+  iconName?: string;
 }
 
 export interface Testimonial {
@@ -41,9 +43,7 @@ export interface Testimonial {
   company?: string;
   avatar: string;
   projectCategory: string;
-  rating: number;
   text: string;
-  themeStyle: "lime" | "light" | "dark";
 }
 
 export interface FAQ {
@@ -52,10 +52,11 @@ export interface FAQ {
   answer: string;
 }
 
-export interface ProcessStep {
+export interface WorkflowStep {
   number: string;
-  phase: string;
+  step: string;
   title: string;
+  subtitle: string;
   description: string;
-  details: string[];
+  deliverables: string[];
 }

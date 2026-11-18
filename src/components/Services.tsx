@@ -1,174 +1,183 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Check, Sparkles, ArrowRight, Zap } from "lucide-react";
+import { Check, ArrowUpRight, Film, Smartphone, Mic, Sparkles, Tv, Scissors, Layers } from "lucide-react";
+import { servicesData } from "@/data/services";
+import { Service } from "@/types";
 
-const pricingPlans = [
-  {
-    id: "starter",
-    name: "Starter Reels",
-    price: "$499",
-    period: "/ bundle",
-    tagline: "Ideal for creators scaling Instagram Reels, TikTok, and YouTube Shorts.",
-    popular: false,
-    features: [
-      "4 High-Retention Short-Form Cuts",
-      "Dynamic Kinetic Subtitles & Hook Pacing",
-      "Punchy SFX & Beat-Locked Audio",
-      "Optimized 9:16 Vertical Format",
-      "48-Hour Turnaround per Cut",
-      "1 Revision Round Included",
-    ],
-    buttonText: "Get Started",
-    buttonClass: "bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-white",
-  },
-  {
-    id: "pro",
-    name: "Pro Cinematic",
-    price: "$1,249",
-    period: "/ month",
-    tagline: "Complete visual production for high-growth brands and established creators.",
-    popular: true,
-    badge: "MOST POPULAR",
-    features: [
-      "Up to 10 Shorts OR 2 Long-Form Commercials",
-      "12-Bit DaVinci Resolve Color Grading",
-      "Bespoke Spatial Audio & Licensed Music",
-      "Custom Motion Graphics & Lower Thirds",
-      "Multi-Cam Footage Synchronization",
-      "24-48h Expedited Delivery",
-      "2 Revision Rounds per Project",
-    ],
-    buttonText: "Choose Pro Plan",
-    buttonClass:
-      "bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-[0_0_25px_rgba(139,92,246,0.6)]",
-  },
-  {
-    id: "enterprise",
-    name: "Agency Retainer",
-    price: "$2,899",
-    period: "/ month",
-    tagline: "Dedicated turnkey editing partner for production agencies & top companies.",
-    popular: false,
-    features: [
-      "Unlimited Monthly Queue (1 active at a time)",
-      "Dedicated Slack / WhatsApp VIP Channel",
-      "Full Raw Project Handover (Premiere/DaVinci)",
-      "Same-Day Rush Delivery Option",
-      "Custom Brand Motion Template Library",
-      "Unlimited Revisions Until Flawless",
-    ],
-    buttonText: "Start Enterprise",
-    buttonClass: "bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-white",
-  },
-];
+const serviceIcons = [Film, Smartphone, Mic, Tv, Sparkles, Scissors, Layers];
 
-export default function Services() {
+interface ServicesProps {
+  services?: Service[];
+}
+
+export default function Services({ services }: ServicesProps) {
+  const displayServices = services && services.length > 0 ? services : servicesData;
+  const [activeServiceId, setActiveServiceId] = useState(displayServices[0]?.id || servicesData[0].id);
+
+  const activeService = displayServices.find((s) => s.id === activeServiceId) || displayServices[0];
+
   return (
-    <section id="services" className="relative bg-[#060714] py-24 sm:py-32 px-4 sm:px-6 lg:px-8 border-t border-white/[0.06] overflow-hidden">
-      {/* Background Starry & Nebula Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-violet-900/10 rounded-full blur-[200px] pointer-events-none" />
-      <div className="absolute inset-0 pointer-events-none stars-overlay opacity-30" />
+    <section id="services" className="relative bg-[#F8F8F5] py-24 sm:py-32 px-4 sm:px-6 lg:px-8 border-t border-[#E5E5DF]">
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 sm:mb-20 gap-6">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FFFFFF] border border-[#E5E5DF] text-[11px] font-semibold tracking-wider text-[#171717] uppercase mb-4 shadow-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#84CC16]" />
+              <span>SERVICES & EXPERTISE</span>
+            </div>
 
-      <div className="max-w-6xl mx-auto relative z-10">
-        
-        {/* Header (Matching Screenshot Section 6) */}
-        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-violet-950/50 border border-violet-500/30 text-xs font-medium text-violet-300 uppercase mb-4 backdrop-blur-md">
-            <Sparkles className="w-3.5 h-3.5 text-violet-400" />
-            <span>Investment &amp; Packages</span>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#171717] leading-[1.05]">
+              What I Can Do For You
+            </h2>
           </div>
 
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight">
-            Choose the Perfect <br />
-            <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent purple-text-glow">
-              Plan For Your Needs
-            </span>
-          </h2>
-
-          <p className="mt-4 text-sm sm:text-base text-slate-300 max-w-xl mx-auto font-normal leading-relaxed">
-            Transparent pricing crafted to help you ship consistent, high-performing videos
-            without headache or compromise.
+          <p className="text-base text-[#666666] max-w-md font-normal leading-relaxed">
+            Full-spectrum video post-production tailored for ambitious brands, top YouTubers, and podcast studios looking for premium retention and visual polish.
           </p>
         </div>
 
-        {/* 3 Pricing Cards (Matching Screenshot) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
-          {pricingPlans.map((plan, idx) => (
-            <motion.div
-              key={plan.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.15 }}
-              className={`relative rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-500 backdrop-blur-2xl ${
-                plan.popular
-                  ? "bg-[#0f1033]/90 border-2 border-violet-500/70 shadow-[0_0_50px_rgba(139,92,246,0.3)] md:-translate-y-3 z-10"
-                  : "bg-[#0c0d24]/85 border border-white/[0.08] hover:border-violet-500/30 shadow-[0_15px_40px_rgba(0,0,0,0.6)]"
-              }`}
-            >
-              {/* Optional Popular Pill Badge */}
-              {plan.popular && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                  <span className="px-4 py-1 rounded-full text-[10px] font-mono uppercase tracking-widest bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-bold shadow-[0_0_15px_rgba(168,85,247,0.6)]">
-                    {plan.badge}
-                  </span>
-                </div>
-              )}
+        {/* Master / Detail Editorial Services Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Left Column: Interactive Service Selectors */}
+          <div className="lg:col-span-5 space-y-3">
+            {displayServices.map((service, index) => {
+              const Icon = serviceIcons[index % serviceIcons.length];
+              const isActive = activeServiceId === service.id;
 
-              <div>
-                {/* Plan Header */}
-                <div className="mb-6">
-                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
-                    {plan.name}
-                  </h3>
-                  <p className="text-xs text-slate-400 leading-relaxed min-h-[36px]">
-                    {plan.tagline}
-                  </p>
-                </div>
-
-                {/* Price Display */}
-                <div className="flex items-baseline gap-1 mb-6 pb-6 border-b border-white/[0.08]">
-                  <span className="text-4xl sm:text-5xl font-bold text-white tracking-tight">
-                    {plan.price}
-                  </span>
-                  <span className="text-xs font-mono text-slate-400">
-                    {plan.period}
-                  </span>
-                </div>
-
-                {/* Feature Checklist */}
-                <div className="space-y-3 mb-8">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-violet-300 block mb-2">
-                    INCLUDED SERVICES:
-                  </span>
-                  {plan.features.map((feat, fIdx) => (
-                    <div key={fIdx} className="flex items-start gap-2.5 text-xs text-slate-300">
-                      <div className="w-4 h-4 rounded-full bg-violet-950/80 border border-violet-500/40 flex items-center justify-center shrink-0 mt-0.5 text-violet-300">
-                        <Check className="w-2.5 h-2.5 stroke-[3]" />
-                      </div>
-                      <span className="leading-snug">{feat}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Bottom CTA Button */}
-              <div className="pt-2">
-                <Link
-                  href="#contact"
-                  className={`w-full py-3.5 rounded-full font-medium text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-300 ${plan.buttonClass}`}
+              return (
+                <button
+                  key={service.id}
+                  onClick={() => setActiveServiceId(service.id)}
+                  className={`w-full p-5 sm:p-6 rounded-2xl text-left transition-all duration-300 border flex items-center justify-between group ${
+                    isActive
+                      ? "bg-[#FFFFFF] border-[#171717] shadow-md ring-1 ring-[#171717]/10"
+                      : "bg-[#F0F0EC] border-[#E5E5DF] hover:bg-[#FFFFFF] hover:border-[#CCCCCC]"
+                  }`}
                 >
-                  <span>{plan.buttonText}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                  <div className="flex items-center gap-4">
+                    <span
+                      className={`font-mono text-sm font-bold ${
+                        isActive ? "text-[#84CC16]" : "text-[#777777]"
+                      }`}
+                    >
+                      {service.number || `0${index + 1}`}
+                    </span>
 
+                    <div>
+                      <h3
+                        className={`text-base sm:text-lg font-bold transition-colors ${
+                          isActive ? "text-[#171717]" : "text-[#555555] group-hover:text-[#171717]"
+                        }`}
+                      >
+                        {service.title}
+                      </h3>
+                      {service.tagline && (
+                        <p className="text-xs text-[#777777] mt-0.5">{service.tagline}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div
+                    className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors shrink-0 ${
+                      isActive
+                        ? "bg-[#171717] text-[#FFFFFF]"
+                        : "bg-[#FFFFFF] text-[#777777] border border-[#E5E5DF]"
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Right Column: Active Service Detailed Showcase Panel */}
+          <div className="lg:col-span-7">
+            {activeService && (
+              <motion.div
+                key={activeService.id}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="bg-[#FFFFFF] rounded-2xl sm:rounded-3xl border border-[#E5E5DF] p-6 sm:p-10 shadow-editorial"
+              >
+                <div className="flex items-center justify-between pb-6 border-b border-[#E5E5DF] mb-6">
+                  <div>
+                    <span className="text-[11px] font-semibold text-[#84CC16] uppercase tracking-wider">
+                      SPECIFICATION OVERVIEW
+                    </span>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-[#171717] mt-1">
+                      {activeService.title}
+                    </h3>
+                  </div>
+
+                  <span className="font-mono text-2xl font-bold text-[#D1D1C7]">
+                    {activeService.number || "01"}
+                  </span>
+                </div>
+
+                <p className="text-sm sm:text-base text-[#555555] leading-relaxed mb-8">
+                  {activeService.shortDescription || (activeService as any).description}
+                </p>
+
+                {/* Key Deliverables & Standards */}
+                {activeService.deliverables && activeService.deliverables.length > 0 && (
+                  <div className="mb-8">
+                    <h4 className="text-xs font-bold tracking-wider text-[#171717] uppercase mb-4">
+                      Deliverables & Production Inclusions:
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {activeService.deliverables.map((item, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-start gap-2.5 p-3 rounded-xl bg-[#F8F8F5] border border-[#E5E5DF] text-xs font-medium text-[#333333]"
+                        >
+                          <Check className="w-4 h-4 text-[#84CC16] shrink-0 mt-0.5" />
+                          <span>{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Production Meta Box */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 rounded-xl bg-[#F0F0EC] border border-[#E5E5DF] mb-8 text-xs">
+                  <div>
+                    <span className="text-[#777777] block text-[10px] uppercase font-semibold">Typical Turnaround</span>
+                    <span className="text-[#171717] font-bold mt-0.5 block">48 – 72 Hours</span>
+                  </div>
+                  <div>
+                    <span className="text-[#777777] block text-[10px] uppercase font-semibold">Master Quality</span>
+                    <span className="text-[#171717] font-bold mt-0.5 block">4K DCI / ProRes 422</span>
+                  </div>
+                  <div>
+                    <span className="text-[#777777] block text-[10px] uppercase font-semibold">Revisions</span>
+                    <span className="text-[#171717] font-bold mt-0.5 block">Unlimited Minor Tweaks</span>
+                  </div>
+                </div>
+
+                {/* Bottom Action CTA */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-[#E5E5DF]">
+                  <div className="text-xs text-[#777777]">
+                    Ready to edit your next video? Let&rsquo;s discuss your pacing and assets.
+                  </div>
+
+                  <Link
+                    href="#contact"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#171717] text-[#FFFFFF] text-xs font-semibold tracking-tight hover:bg-black transition-all shrink-0 group"
+                  >
+                    <span>Inquire About This Service</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </Link>
+                </div>
+              </motion.div>
+            )}
+          </div>
+        </div>
       </div>
     </section>
   );

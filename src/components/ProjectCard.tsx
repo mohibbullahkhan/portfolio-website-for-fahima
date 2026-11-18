@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect } from "react";
 import Image from "next/image";
-import { Play, ArrowUpRight, Clock, Sparkles } from "lucide-react";
+import { Play, Clock, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Project } from "@/types";
 
@@ -24,16 +24,16 @@ export default function ProjectCard({ project, onSelect, index }: ProjectCardPro
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.4, delay: index * 0.04 }}
-      className="col-span-1 group relative bg-[#0c0d24]/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-white/[0.08] hover:border-violet-500/50 transition-all duration-300 overflow-hidden flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.6)] hover:shadow-[0_0_35px_rgba(139,92,246,0.2)]"
+      exit={{ opacity: 0, scale: 0.96 }}
+      transition={{ duration: 0.35, delay: index * 0.04 }}
+      className="col-span-1 group relative bg-[#FFFFFF] rounded-2xl border border-[#E5E5DF] hover:border-[#171717]/40 transition-all duration-300 overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-editorial-hover"
     >
-      {/* Top Media Preview Area */}
+      {/* Thumbnail / Preview Area */}
       <div
         onClick={() => onSelect(project)}
-        className="relative w-full aspect-[16/10] overflow-hidden cursor-pointer bg-black"
+        className="relative w-full aspect-[16/10] overflow-hidden cursor-pointer bg-[#171717]"
       >
         {project.previewVideo ? (
           <video
@@ -52,83 +52,92 @@ export default function ProjectCard({ project, onSelect, index }: ProjectCardPro
             alt={project.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 opacity-90 group-hover:opacity-100"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 opacity-95 group-hover:opacity-100"
           />
         )}
 
-        {/* Cinematic Gradient Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0c0d24] via-transparent to-black/50 opacity-80 group-hover:opacity-60 transition-opacity pointer-events-none" />
+        {/* Ambient Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
 
         {/* Category & Duration Badges */}
         <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between z-10 pointer-events-none">
-          <span className="px-3 py-1 rounded-full text-[10px] font-mono font-medium uppercase tracking-wider bg-black/75 backdrop-blur-md text-violet-300 border border-violet-500/30 shadow-md">
+          <span className="px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider bg-[#171717]/80 backdrop-blur-md text-[#FFFFFF] border border-white/10">
             {project.category}
           </span>
 
           {project.duration && (
-            <span className="px-2.5 py-1 rounded-full text-[10px] font-mono text-slate-300 bg-black/75 backdrop-blur-md flex items-center gap-1.5 border border-white/10 shadow-md">
-              <Clock className="w-3 h-3 text-violet-400" />
+            <span className="px-2.5 py-1 rounded-full text-[11px] font-medium text-white/90 bg-black/60 backdrop-blur-md flex items-center gap-1.5 border border-white/10">
+              <Clock className="w-3 h-3 text-[#84CC16]" />
               <span>{project.duration}</span>
             </span>
           )}
         </div>
 
-        {/* Central Play Button Overlay with Purple Glow */}
+        {/* Center Play Button Indicator */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-violet-600 text-white flex items-center justify-center shadow-[0_0_25px_rgba(139,92,246,0.7)] transform scale-90 group-hover:scale-110 transition-all duration-300">
+          <div className="w-12 h-12 rounded-full bg-[#FFFFFF] text-[#171717] flex items-center justify-center shadow-lg transform scale-90 group-hover:scale-110 transition-all duration-300">
             <Play className="w-5 h-5 fill-current ml-0.5" />
           </div>
         </div>
 
-        {/* Bottom Timecode Simulation */}
-        <div className="absolute bottom-3 left-4 text-[10px] font-mono text-slate-400 group-hover:text-violet-300 transition-colors pointer-events-none">
-          <span>PROJECT // 0{index + 1} 4K UHD</span>
+        {/* Resolution indicator */}
+        <div className="absolute bottom-3 left-4 text-[10px] font-semibold tracking-wider text-white/80 pointer-events-none uppercase">
+          4K DCI • 10-BIT PRORES
         </div>
       </div>
 
-      {/* Card Content & Meta */}
+      {/* Card Info Area */}
       <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
         <div>
-          <div className="flex items-start justify-between gap-3">
+          <div className="flex items-start justify-between gap-3 mb-2">
             <h3
               onClick={() => onSelect(project)}
-              className="text-lg sm:text-xl font-bold uppercase tracking-wide text-white group-hover:text-violet-300 transition-colors cursor-pointer"
+              className="text-lg font-bold text-[#171717] group-hover:text-[#84CC16] transition-colors cursor-pointer leading-snug"
             >
               {project.title}
             </h3>
 
             {project.year && (
-              <span className="text-xs font-mono text-slate-500 pt-1 shrink-0">
-                [{project.year}]
+              <span className="text-xs text-[#777777] font-medium shrink-0 pt-0.5">
+                {project.year}
               </span>
             )}
           </div>
 
-          <p className="mt-2 text-xs sm:text-sm text-slate-400 font-normal leading-relaxed line-clamp-2">
-            {project.shortDescription}
+          <p className="text-xs sm:text-sm text-[#666666] line-clamp-2 leading-relaxed mb-4">
+            {project.shortDescription || (project as any).description}
           </p>
+
+          {/* Tags / Deliverables */}
+          {(project.softwareUsed || (project as any).tags) && (
+            <div className="flex flex-wrap gap-1.5 mb-4">
+              {(project.softwareUsed || (project as any).tags).slice(0, 3).map((tag: string, i: number) => (
+                <span
+                  key={i}
+                  className="px-2.5 py-0.5 text-[10px] font-medium text-[#555555] bg-[#F0F0EC] rounded-md border border-[#E5E5DF]"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Bottom Action Footer */}
-        <div className="mt-5 pt-4 border-t border-white/[0.08] flex items-center justify-between">
-          <div className="flex flex-wrap gap-1.5">
-            {project.softwareUsed?.slice(0, 2).map((software, i) => (
-              <span
-                key={i}
-                className="text-[10px] font-mono text-slate-300 bg-white/[0.04] px-2.5 py-0.5 rounded-full border border-white/[0.06]"
-              >
-                {software}
-              </span>
-            ))}
-          </div>
-
+        {/* Bottom CTA Row */}
+        <div className="pt-3 border-t border-[#E5E5DF] flex items-center justify-between">
           <button
             onClick={() => onSelect(project)}
-            className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-violet-400 hover:text-white transition-colors group-hover:translate-x-1 duration-200"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#171717] group-hover:text-[#84CC16] transition-colors"
           >
-            <span>WATCH</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
+            <span>Watch Video</span>
+            <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </button>
+
+          {project.client && (
+            <span className="text-[11px] text-[#777777] font-medium">
+              Client: {project.client}
+            </span>
+          )}
         </div>
       </div>
     </motion.div>

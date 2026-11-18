@@ -1,50 +1,62 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { getSettings } from "@/lib/api";
 
-export const metadata: Metadata = {
-  title: "FAHIMA — Video Editor & Creative Storyteller",
-  description:
-    "Transforming raw footage into cinematic experiences through creative editing, storytelling, precision color grading, and visual excellence.",
-  keywords: [
-    "Video Editor",
-    "Creative Storyteller",
-    "Color Grading",
-    "Fahima",
-    "Premiere Pro",
-    "DaVinci Resolve",
-    "Motion Graphics",
-    "Commercial Video",
-    "Reels Editor",
-  ],
-  authors: [{ name: "Fahima" }],
-  creator: "Fahima",
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: "https://fahimaedits.com",
-    title: "FAHIMA — Video Editor & Creative Storyteller",
-    description:
-      "Transforming raw footage into cinematic experiences through creative editing, storytelling, and visual excellence.",
-    siteName: "Fahima Portfolio",
-    images: [
-      {
-        url: "https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=1200&q=80",
-        width: 1200,
-        height: 630,
-        alt: "Fahima Video Editor Portfolio",
-      },
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSettings();
+  const title = settings.seoTitle || "FAHIMA — Video Editor & Post-Production Studio";
+  const description =
+    settings.seoDescription ||
+    "International video editor crafting high-retention commercial films, viral creator shorts, podcast series, and cinematic stories for top brands and creators in the US, UK, and Australia.";
+  const ogImage =
+    settings.ogImageUrl ||
+    "https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=1200&q=80";
+
+  return {
+    title,
+    description,
+    keywords: [
+      "Video Editor",
+      "Post-Production",
+      "DaVinci Resolve Colorist",
+      "Premiere Pro Editor",
+      "Fahima",
+      "Commercial Video Editor",
+      "Podcast Video Editor",
+      "YouTube Video Editor",
+      "Short Form Video Editor",
+      "Motion Graphics",
     ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "FAHIMA — Video Editor & Creative Storyteller",
-    description: "Transforming raw footage into cinematic experiences through creative editing.",
-    creator: "@fahimaedits",
-  },
-  icons: {
-    icon: "/favicon.ico",
-  },
-};
+    authors: [{ name: settings.siteName || "Fahima" }],
+    creator: settings.siteName || "Fahima",
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      url: "https://fahimaedits.com",
+      title,
+      description,
+      siteName: settings.siteName || "Fahima Video Editor Portfolio",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      creator: "@fahimaedits",
+      images: [ogImage],
+    },
+    icons: {
+      icon: settings.faviconUrl || "/favicon.ico",
+    },
+  };
+}
 
 export default function RootLayout({
   children,
@@ -52,16 +64,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="bg-background text-primaryText antialiased min-h-screen selection:bg-brand-violet selection:text-white">
+      <body className="bg-[#F8F8F5] text-[#171717] font-sans antialiased selection:bg-[#171717] selection:text-[#F8F8F5] min-h-screen">
         {children}
       </body>
     </html>

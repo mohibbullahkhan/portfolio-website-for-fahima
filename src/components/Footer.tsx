@@ -2,165 +2,161 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowUp, Instagram, Linkedin, Youtube, Globe, Sparkles, MessageCircle } from "lucide-react";
+import { ArrowUp, Instagram, Linkedin, Youtube, Mail, Twitter, MessageCircle } from "lucide-react";
+import { ApiSettings } from "@/lib/api";
 
-export default function Footer() {
+interface FooterProps {
+  settings?: ApiSettings;
+}
+
+export default function Footer({ settings }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const brandName = settings?.siteName || "FAHIMA";
+  const email = settings?.contactEmail || "hello@fahimaedits.com";
+  const footerText =
+    settings?.footerText ||
+    `© ${currentYear} ${brandName}. All rights reserved. Post-production for ambitious creators & brands.`;
+
+  const socialLinks = [
+    {
+      icon: Youtube,
+      href: settings?.socialLinks?.youtube || "https://youtube.com",
+      label: "YouTube",
+    },
+    {
+      icon: Instagram,
+      href: settings?.socialLinks?.instagram || "https://instagram.com",
+      label: "Instagram",
+    },
+    {
+      icon: Linkedin,
+      href: settings?.socialLinks?.linkedin || "https://linkedin.com",
+      label: "LinkedIn",
+    },
+    {
+      icon: Twitter,
+      href: settings?.socialLinks?.twitter || "https://x.com",
+      label: "Twitter/X",
+    },
+    {
+      icon: Mail,
+      href: `mailto:${email}`,
+      label: "Email",
+    },
+  ];
+
   return (
-    <footer className="relative bg-[#050611] text-[#F8FAFC] pt-18 pb-12 px-4 sm:px-6 lg:px-8 border-t border-white/[0.08] overflow-hidden">
-      {/* Subtle Starry & Nebula Glow in Footer */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none stars-overlay opacity-25" />
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-violet-900/10 rounded-full blur-[160px] pointer-events-none" />
-
-      <div className="max-w-6xl mx-auto relative z-10">
-        
-        {/* Main Footer Row (Matching Screenshot Footer) */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-white/[0.08]">
-          
-          {/* Column 1: Brand & Tagline */}
-          <div className="md:col-span-5">
-            <Link href="#home" className="inline-flex items-center gap-2 group mb-3">
-              <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-violet-600 to-fuchsia-500 flex items-center justify-center text-white shadow-[0_0_12px_rgba(168,85,247,0.5)]">
-                <Sparkles className="w-3.5 h-3.5" />
-              </div>
-              <span className="font-display text-2xl uppercase tracking-tight text-white group-hover:text-violet-300 transition-colors">
-                FAHIMA<span className="text-violet-400">.</span>
+    <footer className="relative bg-[#171717] text-[#F8F8F5] pt-16 sm:pt-20 pb-12 px-4 sm:px-6 lg:px-8 border-t border-[#262626] select-none">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-14 pb-12 sm:pb-16 border-b border-[#262626]">
+          {/* Brand Info */}
+          <div className="md:col-span-5 space-y-4">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#84CC16]" />
+              <span className="font-bold text-2xl tracking-tight text-[#FFFFFF] uppercase">
+                {brandName}
               </span>
-            </Link>
+            </div>
 
-            <p className="text-xs font-mono uppercase tracking-widest text-violet-400 font-semibold mb-3">
-              VIDEO EDITOR &amp; CREATIVE STORYTELLER
+            <p className="text-sm text-[#999999] max-w-sm leading-relaxed">
+              Crafting engaging videos that capture attention, tell compelling stories, and help creators and global brands stand out.
             </p>
 
-            <p className="text-xs sm:text-sm text-slate-400 font-normal max-w-sm leading-relaxed">
-              Available worldwide for commercial campaigns, high-retention social reels,
-              music videos, and cinematic narrative editing.
-            </p>
-
-            <div className="mt-5 flex items-center gap-2.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-[11px] font-mono text-slate-300">
-                CURRENT STATUS: ACCEPTING SELECT COMMISSIONS
-              </span>
+            <div className="pt-2">
+              <a
+                href={`mailto:${email}`}
+                className="text-xs font-semibold text-[#84CC16] hover:underline"
+              >
+                {email}
+              </a>
             </div>
           </div>
 
-          {/* Column 2: Navigation Links */}
-          <div className="md:col-span-3">
-            <h4 className="text-[11px] font-mono uppercase tracking-widest text-slate-400 mb-4">
-              QUICK NAVIGATION
+          {/* Quick Navigation Links */}
+          <div className="md:col-span-3 space-y-3">
+            <h4 className="text-xs font-bold tracking-wider text-[#FFFFFF] uppercase">
+              Navigation
             </h4>
-            <ul className="space-y-2 text-xs sm:text-sm">
+            <ul className="space-y-2 text-xs text-[#999999]">
               <li>
-                <Link href="#home" className="text-slate-300 hover:text-violet-300 transition-colors">
-                  Home
+                <Link href="#work" className="hover:text-[#FFFFFF] transition-colors">
+                  Selected Work
                 </Link>
               </li>
               <li>
-                <Link href="#work" className="text-slate-300 hover:text-violet-300 transition-colors">
-                  Previous Work
+                <Link href="#services" className="hover:text-[#FFFFFF] transition-colors">
+                  Available Services
                 </Link>
               </li>
               <li>
-                <Link href="#services" className="text-slate-300 hover:text-violet-300 transition-colors">
-                  Services &amp; Pricing
+                <Link href="#process" className="hover:text-[#FFFFFF] transition-colors">
+                  Working Process
                 </Link>
               </li>
               <li>
-                <Link href="#process" className="text-slate-300 hover:text-violet-300 transition-colors">
-                  Creative Process
+                <Link href="#about" className="hover:text-[#FFFFFF] transition-colors">
+                  About the Editor
                 </Link>
               </li>
               <li>
-                <Link href="#about" className="text-slate-300 hover:text-violet-300 transition-colors">
-                  About Fahima
+                <Link href="#testimonials" className="hover:text-[#FFFFFF] transition-colors">
+                  Client Feedback
                 </Link>
               </li>
               <li>
-                <Link href="#contact" className="text-slate-300 hover:text-violet-300 transition-colors">
-                  Contact
+                <Link href="#contact" className="hover:text-[#FFFFFF] transition-colors">
+                  Start a Project
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Column 3: Communication & Socials (Matching the rounded square icon badges from screenshot) */}
-          <div className="md:col-span-4 flex flex-col justify-between">
-            <div>
-              <h4 className="text-[11px] font-mono uppercase tracking-widest text-slate-400 mb-3">
-                DIRECT INQUIRY
-              </h4>
-              <a
-                href="https://wa.me/8801793884684?text=Hi%20Fahima!%20I%20am%20interested%20in%20your%20video%20editing%20services."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm sm:text-base font-mono text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-2 mb-2 font-medium"
-              >
-                <MessageCircle className="w-4 h-4 text-emerald-400" />
-                <span>+880 1793-884684</span>
-              </a>
-              <a
-                href="mailto:hello@fahimaedits.com"
-                className="text-xs sm:text-sm font-mono text-slate-300 hover:text-violet-300 transition-colors block"
-              >
-                hello@fahimaedits.com
-              </a>
-              <p className="mt-2 text-xs font-mono text-slate-500">
-                Remote Worldwide Collaboration
-              </p>
-            </div>
+          {/* Socials & Connect */}
+          <div className="md:col-span-4 space-y-3">
+            <h4 className="text-xs font-bold tracking-wider text-[#FFFFFF] uppercase">
+              Connect &amp; Social
+            </h4>
+            <p className="text-xs text-[#999999] leading-relaxed">
+              Follow along for editing breakdowns, DaVinci Resolve color science tips, and recent cuts.
+            </p>
 
-            {/* Social Icons in Rounded Square Containers (from Reference Screenshot) */}
-            <div className="mt-6">
-              <span className="text-[11px] font-mono uppercase tracking-widest text-slate-400 block mb-3">
-                FOLLOW &amp; CONNECT
-              </span>
-              <div className="flex items-center gap-2.5">
-                {[
-                  { icon: Instagram, href: "https://instagram.com", label: "Instagram" },
-                  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-                  { icon: Youtube, href: "https://youtube.com", label: "YouTube" },
-                  { icon: Globe, href: "https://behance.net", label: "Behance" },
-                ].map((s, i) => (
+            <div className="flex items-center gap-2.5 pt-2">
+              {socialLinks.map((item, idx) => {
+                const Icon = item.icon;
+                return (
                   <a
-                    key={i}
-                    href={s.href}
+                    key={idx}
+                    href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={s.label}
-                    className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white hover:border-violet-500/50 hover:bg-violet-950/40 transition-all duration-200 shadow-sm"
+                    aria-label={item.label}
+                    className="w-9 h-9 rounded-full bg-[#262626] hover:bg-[#84CC16] hover:text-[#171717] text-[#FFFFFF] flex items-center justify-center transition-all"
                   >
-                    <s.icon className="w-4 h-4" />
+                    <Icon className="w-4 h-4" />
                   </a>
-                ))}
-              </div>
+                );
+              })}
             </div>
-
           </div>
-
         </div>
 
-        {/* Bottom Legal & Back to Top Row */}
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-500">
-          <p>© {currentYear} FAHIMA. ALL RIGHTS RESERVED.</p>
+        {/* Bottom Row */}
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#777777]">
+          <p>{footerText}</p>
 
           <button
             onClick={scrollToTop}
-            className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-slate-400 hover:text-violet-300 transition-colors"
-            aria-label="Back to top of page"
+            className="flex items-center gap-1.5 hover:text-[#FFFFFF] transition-colors"
           >
-            <span>BACK TO TOP</span>
-            <span className="w-7 h-7 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-violet-400 hover:bg-violet-600 hover:text-white transition-colors">
-              <ArrowUp className="w-3.5 h-3.5" />
-            </span>
+            <span>Back to top</span>
+            <ArrowUp className="w-3.5 h-3.5" />
           </button>
         </div>
-
       </div>
     </footer>
   );

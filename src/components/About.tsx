@@ -4,133 +4,156 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Sparkles, Film, Heart } from "lucide-react";
+import { ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { ApiProfile } from "@/lib/api";
 
-export default function About() {
+const professionalValues = [
+  {
+    number: "01",
+    title: "Precision Pacing",
+    desc: "Every cut is calibrated to the exact frame. Zero filler, high retention, and intentional flow engineered for modern audience attention spans.",
+  },
+  {
+    number: "02",
+    title: "Narrative Rhythm",
+    desc: "Editing is visual music. Cuts harmonize with natural speech cadences, emotional micro-beats, and audio transients.",
+  },
+  {
+    number: "03",
+    title: "12-Bit Color Science",
+    desc: "DaVinci Resolve Studio color pipeline. Skin tone isolation, cinematic film emulation, and accurate Rec.709 mastering.",
+  },
+  {
+    number: "04",
+    title: "Obsessive Sound Design",
+    desc: "Layered foley, tactile risers, sub-bass hits, and dialogue speech clarity normalized to strict -14 LUFS broadcast standards.",
+  },
+];
+
+interface AboutProps {
+  profile?: ApiProfile;
+}
+
+export default function About({ profile }: AboutProps) {
+  const name = profile?.name || "FAHIMA";
+  const headline = profile?.headline || "Senior Video Editor & Post-Production Specialist";
+  const bio =
+    profile?.bio ||
+    "I craft high-retention commercial films, viral creator shorts, and narrative cuts for creators and global brands across the US, UK, and Australia — combining frame-accurate pacing, 12-bit DaVinci Resolve color grading, and broadcast spatial audio design.";
+  const profileImage =
+    profile?.profileImage ||
+    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80";
+  const location = profile?.location || "Remote Commissions • US, UK, & Australia";
+  const availability = profile?.availabilityStatus || "Available for Select Commissions";
+
   return (
-    <section id="about" className="relative bg-[#060714] py-24 sm:py-32 px-4 sm:px-6 lg:px-8 border-t border-white/[0.06] overflow-hidden">
-      {/* Background Ambience */}
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-violet-600/10 rounded-full blur-[180px] pointer-events-none" />
-      <div className="absolute inset-0 pointer-events-none stars-overlay opacity-30" />
-
-      <div className="max-w-6xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          
-          {/* Left Column: Portrait & Creative Badge */}
+    <section id="about" className="relative bg-[#F8F8F5] py-24 sm:py-32 px-4 sm:px-6 lg:px-8 border-t border-[#E5E5DF]">
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* Left Column: Portrait & Studio Spec Card */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="lg:col-span-5 relative"
+            className="lg:col-span-5"
           >
-            <div className="relative aspect-[3/4] rounded-3xl overflow-hidden border border-white/[0.1] hover:border-violet-500/40 shadow-[0_20px_50px_rgba(0,0,0,0.8)] bg-[#0c0d24] group transition-colors">
+            <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-[#E5E5DF] bg-[#171717] shadow-editorial group">
               <Image
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80"
-                alt="Fahima - Creative Video Editor"
+                src={profileImage}
+                alt={`${name} - Video Editor`}
                 fill
-                className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+                sizes="(max-width: 768px) 100vw, 40vw"
+                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-95 group-hover:opacity-100"
               />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-[#060714] via-transparent to-transparent opacity-80" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
-              {/* Floating Name Stamp */}
-              <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-[#0c0d24]/90 backdrop-blur-xl border border-white/[0.1] shadow-xl">
-                <span className="text-[10px] font-mono text-violet-400 uppercase tracking-widest block">
-                  CREATIVE STORYTELLER
-                </span>
-                <span className="text-xl sm:text-2xl font-bold uppercase text-white tracking-wide">
-                  FAHIMA
-                </span>
-                <span className="text-xs text-slate-400 block mt-0.5">
-                  Available for Remote &amp; Worldwide Projects
-                </span>
+              {/* Floating Bottom Card */}
+              <div className="absolute bottom-6 left-6 right-6 p-5 rounded-2xl bg-[#FFFFFF]/95 backdrop-blur-xl border border-[#E5E5DF] shadow-lg">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[10px] font-semibold text-[#84CC16] uppercase tracking-wider truncate max-w-[200px]">
+                    {headline}
+                  </span>
+                  <span className="w-2 h-2 rounded-full bg-[#84CC16] animate-pulse" />
+                </div>
+                <h3 className="text-xl font-bold text-[#171717]">
+                  {name}
+                </h3>
+                <p className="text-xs text-[#777777] mt-1">
+                  {location}
+                </p>
+                <div className="mt-2 pt-2 border-t border-[#E5E5DF] flex items-center gap-1.5 text-[11px] font-semibold text-[#171717]">
+                  <span className="w-2 h-2 rounded-full bg-[#84CC16]" />
+                  <span>{availability}</span>
+                </div>
               </div>
             </div>
 
-            {/* Decorative Corner Tag */}
-            <div className="absolute -top-3 -right-3 px-4 py-2 rounded-full bg-violet-600 text-white font-medium text-xs uppercase flex items-center justify-center text-center shadow-[0_0_20px_rgba(139,92,246,0.5)]">
-              ✦ PRO CRAFT
+            {/* Quick NLE & Toolset Badge */}
+            <div className="mt-4 p-4 rounded-2xl bg-[#FFFFFF] border border-[#E5E5DF] flex items-center justify-between text-xs font-semibold text-[#555555] shadow-sm">
+              <span>PRIMARY NLE // PREMIERE PRO</span>
+              <span className="text-[#CCCCCC]">•</span>
+              <span>COLOR // DAVINCI RESOLVE</span>
             </div>
           </motion.div>
 
-          {/* Right Column: Narrative, Philosophy & CTA */}
+          {/* Right Column: Bio, Philosophy & Professional Values */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
             className="lg:col-span-7"
           >
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-violet-950/50 border border-violet-500/30 text-xs font-medium text-violet-300 uppercase mb-4 backdrop-blur-md">
-              <Sparkles className="w-3.5 h-3.5 text-violet-400" />
-              <span>Behind The Timeline</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FFFFFF] border border-[#E5E5DF] text-[11px] font-semibold tracking-wider text-[#171717] uppercase mb-4 shadow-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#84CC16]" />
+              <span>ABOUT THE EDITOR</span>
             </div>
 
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight">
-              Crafting Stories That <br />
-              <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent purple-text-glow">
-                Resonate Deeply.
-              </span>
+            <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-[#171717] leading-[1.1] mb-6">
+              Story First. Pacing Always. Polish Guaranteed.
             </h2>
 
-            <div className="mt-6 space-y-4 text-sm sm:text-base text-slate-300 font-normal leading-relaxed">
-              <p className="text-white font-medium text-base sm:text-lg">
-                Hi, I&apos;m Fahima — a passionate video editor dedicated to turning raw footage into
-                memorable visual journeys.
-              </p>
+            <p className="text-base sm:text-lg text-[#555555] leading-relaxed mb-6 font-normal">
+              {bio}
+            </p>
 
-              <p className="text-slate-400">
-                I believe that pacing is an emotional language, color grading is an atmospheric signature,
-                and sound design is the heartbeat of every great video.
-              </p>
+            <p className="text-sm sm:text-base text-[#777777] leading-relaxed mb-10">
+              Great editing is invisible: the audience should feel the momentum, the humor, and the emotional crescendo without ever noticing a cut. Every project I accept receives complete dedication, direct personal communication, and rapid turnaround.
+            </p>
 
-              <p className="text-slate-400">
-                Whether shaping high-converting 30-second reels or long-form documentary films, my focus
-                is always on maximizing engagement, retention, and artistic distinction.
-              </p>
+            {/* Values 2x2 Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-10">
+              {professionalValues.map((val) => (
+                <div
+                  key={val.number}
+                  className="p-5 rounded-2xl bg-[#FFFFFF] border border-[#E5E5DF] shadow-sm hover:border-[#171717]/30 transition-colors"
+                >
+                  <span className="font-mono text-xs font-bold text-[#84CC16] block mb-1">
+                    {val.number}
+                  </span>
+                  <h3 className="text-base font-bold text-[#171717] mb-2">
+                    {val.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-[#666666] leading-relaxed">
+                    {val.desc}
+                  </p>
+                </div>
+              ))}
             </div>
 
-            {/* Philosophy Pillars */}
-            <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 border-y border-white/[0.08] py-5">
-              <div>
-                <span className="font-mono text-xs uppercase tracking-wider text-violet-400 block mb-1">
-                  01 / RHYTHM
-                </span>
-                <p className="text-xs text-slate-400">
-                  Subconscious pacing calibrated to human attention spans.
-                </p>
-              </div>
-              <div>
-                <span className="font-mono text-xs uppercase tracking-wider text-violet-400 block mb-1">
-                  02 / COLOR
-                </span>
-                <p className="text-xs text-slate-400">
-                  Rich 12-bit chromatic depth and cinematic LUT emulation.
-                </p>
-              </div>
-              <div>
-                <span className="font-mono text-xs uppercase tracking-wider text-violet-400 block mb-1">
-                  03 / RETENTION
-                </span>
-                <p className="text-xs text-slate-400">
-                  Engineered 3-second hooks and dynamic audio swells.
-                </p>
-              </div>
-            </div>
-
-            {/* CTA Button */}
-            <div className="mt-8">
+            {/* CTA */}
+            <div className="flex items-center gap-4">
               <Link
                 href="#contact"
-                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-white font-medium text-sm sm:text-base bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 shadow-[0_0_25px_rgba(139,92,246,0.5)] transition-all duration-300 hover:scale-[1.02]"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[#171717] text-[#FFFFFF] text-xs font-semibold tracking-tight hover:bg-black transition-all shadow-sm group"
               >
-                <span>Let&apos;s Create Something</span>
-                <ArrowUpRight className="w-4 h-4" />
+                <span>Let&rsquo;s Build Your Next Video</span>
+                <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </Link>
             </div>
           </motion.div>
-
         </div>
       </div>
     </section>

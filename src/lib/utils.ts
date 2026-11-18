@@ -7,7 +7,9 @@ export function cn(...inputs: ClassValue[]) {
 
 export function extractVideoId(url: string, type: "youtube" | "vimeo" | "mp4"): string {
   if (type === "youtube") {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    // If raw 11-char ID
+    if (/^[a-zA-Z0-9_-]{11}$/.test(url)) return url;
+    const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|shorts\/|watch\?v=|[?&]v=)([^#&?]*).*/;
     const match = url.match(regExp);
     return match && match[2].length === 11 ? match[2] : url;
   }
