@@ -42,7 +42,7 @@ export default function About({ profile }: AboutProps) {
     "I craft high-retention commercial films, viral creator shorts, and narrative cuts for creators and global brands across the US, UK, and Australia — combining frame-accurate pacing, 12-bit DaVinci Resolve color grading, and broadcast spatial audio design.";
   const profileImage =
     profile?.profileImage ||
-    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80";
+    "https://i.ibb.co.com/pvM01V2h/A9-CC37-F4-A211-4-C07-958-B-86281-CB3030-B.jpg";
   const location = profile?.location || "Remote Commissions • US, UK, & Australia";
   const availability = profile?.availabilityStatus || "Available for Select Commissions";
 
@@ -63,6 +63,7 @@ export default function About({ profile }: AboutProps) {
                 src={profileImage}
                 alt={`${name} - Video Editor`}
                 fill
+                unoptimized
                 sizes="(max-width: 768px) 100vw, 40vw"
                 className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-95 group-hover:opacity-100"
               />

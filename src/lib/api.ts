@@ -149,7 +149,7 @@ export async function getProfile(): Promise<ApiProfile> {
     headline: "Senior Video Editor & Post-Production Specialist",
     bio: "I craft high-retention commercial films, viral creator shorts, and narrative cuts for creators and global brands across the US, UK, and Australia — combining frame-accurate pacing, 12-bit DaVinci Resolve color grading, and broadcast spatial audio design.",
     profileImage:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80",
+      "https://i.ibb.co.com/pvM01V2h/A9-CC37-F4-A211-4-C07-958-B-86281-CB3030-B.jpg",
     location: "Remote / Worldwide (US, UK, AUS)",
     availabilityStatus: "Available for select commissions",
   });
